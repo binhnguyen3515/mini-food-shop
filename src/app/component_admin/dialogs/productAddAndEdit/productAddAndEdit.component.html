@@ -1,0 +1,329 @@
+<mat-dialog-content class="mat-typography" [formGroup]="productForm">
+  <h1 style="color:var(--mainFormColor);">{{action}} Product</h1>
+  <!--Main Image Field-->
+  <div class="main_image_field">
+    <div class="main_image_field_container">
+      <img class="image_" *ngIf="previews.length>0;else noImage" [src]="action==='Add'?previews[0]:action==='Edit'&&selectedFileAction==='choosing'?previews[0]:baseHostImageUrl+previews[0]" alt="">
+      <ng-template #noImage>
+        <img [src]="'assets/img/admin_img/noImage.jpg'" height="240px" width="240px" alt="">
+      </ng-template>
+    </div>
+    <div class="main_image_field_right_content">
+      <div class="first_part_right_content">
+        <mat-form-field appearance="outline" class="mat-form-field-readonly">
+          <mat-label>Product Id</mat-label>
+          <input color="warn" matInput placeholder="Ex. ProductId.." formControlName="id" readonly>
+          <mat-icon matSuffix>drag_indicator</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Name</mat-label>
+          <input matInput placeholder="Ex. Dưa leo.." formControlName="name">
+          <mat-icon matSuffix>drag_indicator</mat-icon>
+          <mat-error *ngIf="name!.invalid && (name!.dirty||name!.touched )">
+            <mat-error *ngIf="name!.errors?.['required']">
+              Chưa nhập tên sản phẩm!
+            </mat-error>
+            <mat-error *ngIf="name!.errors?.['minlength']">
+              Tên sản phẩm tối thiểu 2 ký tự
+            </mat-error>
+            <mat-error *ngIf="name!.errors?.['maxlength']">
+              Tên sản phẩm tối đa 50 ký tự
+            </mat-error>
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Brand</mat-label>
+          <input matInput placeholder="Ex. Vissan.." formControlName="brand">
+          <mat-icon matSuffix>drag_indicator</mat-icon>
+          <mat-error *ngIf="brand!.invalid && (brand!.dirty||brand!.touched )">
+            <mat-error *ngIf="brand!.errors?.['required']">
+              Chưa nhập hãng sản xuất!
+            </mat-error>
+            <mat-error *ngIf="brand!.errors?.['minlength']">
+              Tên hãng tối thiểu 2 ký tự
+            </mat-error>
+            <mat-error *ngIf="brand!.errors?.['maxlength']">
+              Tên hãng tối đa 50 ký tự
+            </mat-error>
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Origin</mat-label>
+          <input matInput placeholder="Ex. Thái Lan.." formControlName="origin">
+          <mat-icon matSuffix>drag_indicator</mat-icon>
+          <mat-error *ngIf="origin!.invalid && (origin!.dirty||origin!.touched )">
+            <mat-error *ngIf="origin!.errors?.['required']">
+              Chưa nhập nguồn gốc!
+            </mat-error>
+            <mat-error *ngIf="origin!.errors?.['minlength']">
+              Nguồn gốc tối thiểu 1 ký tự
+            </mat-error>
+            <mat-error *ngIf="origin!.errors?.['maxlength']">
+              Nguồn gốc tối đa 50 ký tự
+            </mat-error>
+          </mat-error>
+        </mat-form-field>
+
+      </div>
+
+      <div class="second_part_right_content">
+        <mat-form-field appearance="outline">
+          <mat-label>Discount</mat-label>
+          <input matInput placeholder="Ex. 0 - 100.." formControlName="percentage">
+          <mat-icon matSuffix>drag_indicator</mat-icon>
+          <mat-error *ngIf="percentage!.invalid && (percentage!.dirty||percentage!.touched )">
+            <mat-error *ngIf="percentage!.errors?.['min']">
+              Discount phải >= 0
+            </mat-error>
+            <mat-error *ngIf="percentage!.errors?.['max']">
+              Discount tối đa là 100
+            </mat-error>
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Enter a discount date range</mat-label>
+          <mat-date-range-input [rangePicker]="picker">
+            <input matStartDate placeholder="Start date" formControlName="startDate">
+            <input matEndDate placeholder="End date" formControlName="endDate">
+          </mat-date-range-input>
+          <mat-error *ngIf="startDate!.invalid && (startDate!.dirty||startDate!.touched )">
+            <mat-error *ngIf="endDate!.errors?.['required'] || startDate!.errors?.['required']">
+              Chưa nhập khoảng thời gian giảm giá
+            </mat-error>
+            <mat-error *ngIf="startDate!.errors?.['invalidDate'] && !(endDate!.errors?.['required'] || startDate!.errors?.['required'])">
+              Ngày giảm giá tối thiểu là ngày hôm nay
+            </mat-error>
+          </mat-error>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-date-range-picker #picker></mat-date-range-picker>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Enter expiration (if any)</mat-label>
+          <mat-date-range-input [rangePicker]="picker2">
+            <input matStartDate placeholder="Date release" formControlName="dateRelease">
+            <input matEndDate placeholder="Date end" formControlName="dateEnd">
+          </mat-date-range-input>
+          <mat-error *ngIf="dateRelease!.invalid && (dateRelease!.dirty||dateRelease!.touched )">
+            <mat-error *ngIf="dateRelease!.errors?.['required']">
+              Chưa chọn ngày phát hành!
+            </mat-error>
+          </mat-error>
+          <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+          <mat-date-range-picker #picker2></mat-date-range-picker>
+        </mat-form-field>
+      </div>
+
+      <div class="third_part_right_content">
+        <mat-form-field appearance="outline">
+          <mat-label>Category</mat-label>
+          <mat-select formControlName="categoryId" (selectionChange)="selectCategory($event)">
+            <mat-option *ngFor="let cate of categoryList$" [value]="cate.id" >
+              {{cate.name}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="categoryId!.invalid && (categoryId!.dirty||categoryId!.touched )">
+            <mat-error *ngIf="categoryId!.errors?.['required']">
+              Chưa chọn danh mục!
+            </mat-error>
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Category_Sub</mat-label>
+          <mat-select formControlName="categorySubId" (selectionChange)="selectedSubCate($event)">
+            <mat-option *ngFor="let cateSub of categorySub$|async" [value]="cateSub.id">
+              {{cateSub.name}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="categorySubId!.invalid && (categorySubId!.dirty||categorySubId!.touched )">
+            <mat-error *ngIf="categoryId!.errors?.['required']">
+              Vui lòng chọn danh mục chính trước!
+            </mat-error>
+            <mat-error *ngIf="categorySubId!.errors?.['required'] && !categoryId!.errors?.['required']">
+              Chưa chọn danh mục phụ!
+            </mat-error>
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Unit</mat-label>
+          <mat-select formControlName="typeId">
+            <mat-option *ngFor="let u of unitList" [value]="u.id">
+              {{u.type}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="typeId!.invalid && (typeId!.dirty||typeId!.touched )">
+            <mat-error *ngIf="typeId!.errors?.['required']">
+              Chưa chọn đơn vị tính!
+            </mat-error>
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="mat-form-field-readonly">
+          <mat-label>Available</mat-label>
+          <mat-select formControlName="available">
+            <mat-option *ngFor="let a of availableList" [value]="a" disabled>
+              {{a?"Có hàng":"Chưa có hàng"}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="available!.invalid && (available!.dirty||available!.touched )">
+            <mat-error *ngIf="available!.errors?.['required']">
+              Chưa chọn trạng thái
+            </mat-error>
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+  <!--Main Image Field Edge-->
+
+  <!--Detail Product Field-->
+  <div class="detailProduct">
+    <mat-form-field appearance="legacy">
+      <mat-label>Price</mat-label>
+      <input type="number" matInput placeholder="Ex. 10,000 vnd.." formControlName="priceSell">
+      <mat-icon matSuffix>drag_indicator</mat-icon>
+      <mat-error *ngIf="priceSell!.invalid && (priceSell!.dirty||priceSell!.touched )">
+        <mat-error *ngIf="priceSell!.errors?.['min']">
+          Giá tối thiểu là 0 vnd!
+        </mat-error>
+        <mat-error *ngIf="priceSell!.errors?.['max']">
+          Giá tối đa là 1 tỷ vnd!
+        </mat-error>
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="legacy" class="mat-form-field-readonly">
+      <mat-label>Quantity</mat-label>
+      <input matInput placeholder="Ex. 0 - 500.." formControlName="quantity" readonly>
+      <mat-icon matSuffix>drag_indicator</mat-icon>
+      <mat-error *ngIf="quantity!.invalid && (quantity!.dirty||quantity!.touched )">
+        <mat-error *ngIf="quantity!.errors?.['pattern']">
+          Số lượng phải là số nguyên >= 0
+        </mat-error>
+        <mat-error *ngIf="quantity!.errors?.['max'] && !quantity!.errors?.['pattern']">
+          Số lượng tối đa là 1 triệu
+        </mat-error>
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="legacy">
+      <mat-label>Weight</mat-label>
+      <input matInput placeholder="Ex. 2 kg.." formControlName="weight">
+      <mat-icon matSuffix>drag_indicator</mat-icon>
+      <mat-error *ngIf="weight!.invalid && (weight!.dirty||weight!.touched )">
+        <mat-error *ngIf="weight!.errors?.['maxlength']">
+          Cân nặng tối đa 15 ký tự
+        </mat-error>
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="legacy">
+      <mat-label>Capacity</mat-label>
+      <input matInput placeholder="Ex. 1 lít" formControlName="capacity">
+      <mat-icon matSuffix>drag_indicator</mat-icon>
+      <mat-error *ngIf="capacity!.invalid && (capacity!.dirty||capacity!.touched )">
+        <mat-error *ngIf="capacity!.errors?.['maxlength']">
+          Dung tích tối đa 15 ký tự
+        </mat-error>
+      </mat-error>
+    </mat-form-field>
+
+  </div>
+  <!--Detail Product Field Edge-->
+
+  <!--Product Info-->
+  <div class="productInfo">
+    <mat-form-field appearance="legacy">
+      <mat-label>Guide</mat-label>
+      <textarea matInput formControlName="guide"></textarea>
+      <mat-error *ngIf="guide!.invalid && (guide!.dirty||guide!.touched )">
+        <mat-error *ngIf="guide!.errors?.['maxlength']">
+          Hướng dẫn tối đa 500 ký tự
+        </mat-error>
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="legacy">
+      <mat-label>Note</mat-label>
+      <textarea matInput formControlName="note"></textarea>
+      <mat-error *ngIf="note!.invalid && (note!.dirty||note!.touched )">
+        <mat-error *ngIf="note!.errors?.['maxlength']">
+          Ghi chú tối đa 250 ký tự
+        </mat-error>
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="legacy">
+      <mat-label>Usage</mat-label>
+      <textarea matInput formControlName="usage"></textarea>
+      <mat-error *ngIf="usage!.invalid && (usage!.dirty||usage!.touched )">
+        <mat-error *ngIf="usage!.errors?.['maxlength']">
+          Cách dùng/bảo quản tối đa 250 ký tự
+        </mat-error>
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="legacy">
+      <mat-label>Others</mat-label>
+      <textarea matInput formControlName="others"></textarea>
+      <mat-error *ngIf="others!.invalid && (others!.dirty||others!.touched )">
+        <mat-error *ngIf="others!.errors?.['maxlength']">
+          Thông tin khác tối đa 250 ký tự
+        </mat-error>
+      </mat-error>
+    </mat-form-field>
+  </div>
+  <!--Product Info Edge-->
+
+  <!--Description-->
+  <div class="description">
+    <mat-form-field appearance="legacy">
+      <mat-label>Description</mat-label>
+      <textarea matInput formControlName="description"></textarea>
+      <mat-error *ngIf="description!.invalid && (description!.dirty||description!.touched )">
+        <mat-error *ngIf="description!.errors?.['maxlength']">
+          Mô tả sản phẩm tối đa 500 ký tự
+        </mat-error>
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="legacy">
+      <mat-label>Component</mat-label>
+      <textarea matInput formControlName="component"></textarea>
+      <mat-error *ngIf="component!.invalid && (component!.dirty||component!.touched )">
+        <mat-error *ngIf="component!.errors?.['maxlength']">
+          Thành phần sản phẩm tối đa 250 ký tự
+        </mat-error>
+      </mat-error>
+    </mat-form-field>
+  </div>
+  <!--Description edge-->
+  <div class="file_input mt-3">
+    <mat-form-field [style.width.%]="100" class="choose" appearance="outline">
+      <mat-label>File(s) choose</mat-label>
+      <ngx-mat-file-input #removableInput matInput type="file" accept="image/*" formControlName="files" multiple (change)="selectFiles($event)" >
+      </ngx-mat-file-input>
+      <mat-error *ngIf="files!.invalid && (files!.dirty||files!.touched )">
+        <mat-error *ngIf="files!.errors?.['required']">
+          Chọn ít nhất 1 ảnh!
+        </mat-error>
+      </mat-error>
+      <button mat-icon-button matSuffix *ngIf="!removableInput.empty" (click)="removableInput.clear($event);previews = []">
+        <mat-icon>clear</mat-icon>
+      </button>
+      <mat-icon matSuffix *ngIf="removableInput.empty">attach_file</mat-icon>
+    </mat-form-field>
+  </div>
+  <div class="image_component" *ngIf="previews.length>0">
+    <img *ngFor='let preview of previews' [src]="action==='Add'?preview:action==='Edit'&&selectedFileAction==='choosing'?preview:baseHostImageUrl+preview" class="preview">
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-raised-button color="warn" mat-dialog-close (click)="cancelDialog()">Cancel</button>
+  <button mat-raised-button color="accent" (click)="productForm.reset();previews = [];ngOnInit()">Reset</button>
+  <!-- <button mat-raised-button color="accent" [mat-dialog-close]="true" cdkFocusInitial>Save</button> -->
+  <button mat-raised-button color="primary" (click)="submit()" cdkFocusInitial >Save</button>
+</mat-dialog-actions>

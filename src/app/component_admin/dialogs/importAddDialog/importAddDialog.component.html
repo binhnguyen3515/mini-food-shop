@@ -1,0 +1,305 @@
+<mat-dialog-content class="mat-typography" style="height:100%;max-height: 900px;">
+  <h1 style="color:var(--mainFormColor);">Import Product(Add)</h1>
+
+ <div class="import_content" [formGroup]="formImport">
+    <div class="import_content_wrapper">
+      <div class="import_firstRow">
+        <mat-form-field appearance="outline">
+          <mat-label>Import_ID</mat-label>
+          <input matInput placeholder="Ex. IP009.." formControlName="id">
+          <mat-icon matSuffix>drag_indicator</mat-icon>
+          <mat-error *ngIf="id!.invalid && (id!.dirty||id!.touched )">
+            <mat-error *ngIf="id!.errors?.['required']">
+              Chưa nhập mã nhập hàng
+            </mat-error>
+            <mat-error *ngIf="id!.errors?.['pattern'] && !id!.errors?.['required']">
+              Mã nhập hàng không đúng định dạng
+            </mat-error>
+            <mat-error *ngIf="id!.errors?.['existedImportID']">
+              Mã nhập hàng đã tồn tại
+            </mat-error>
+          </mat-error>
+        </mat-form-field>
+  
+        <mat-form-field appearance="outline">
+          <mat-label>Address</mat-label>
+          <input matInput placeholder="Ex. 200 Lê Hồng Phong..." formControlName="address">
+          <mat-icon matSuffix>drag_indicator</mat-icon>
+          <mat-error *ngIf="address!.invalid && (address!.dirty||address!.touched )">
+            <mat-error *ngIf="address!.errors?.['required']">
+              Chưa nhập địa chỉ
+            </mat-error>
+            <mat-error *ngIf="address!.errors?.['minlength']">
+              Địa chỉ tối thiểu 10 ký tự
+            </mat-error>
+            <mat-error *ngIf="address!.errors?.['maxlength']">
+              Địa chỉ tối đa 50 ký tự
+            </mat-error>
+          </mat-error>
+        </mat-form-field>
+  
+        <mat-form-field appearance="outline">
+          <mat-label>Import Date</mat-label>
+          <input matInput [matDatepicker]="picker" placeholder="Ex. 02/03/2022" formControlName="date">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <mat-error *ngIf="date!.invalid && (date!.dirty||date!.touched )">
+            <mat-error *ngIf="date!.errors?.['required']">
+              Chưa chọn ngày nhập hàng
+            </mat-error>
+          </mat-error>
+        </mat-form-field>
+  
+        <mat-form-field appearance="outline">
+          <mat-label>Shipper Name</mat-label>
+          <input matInput placeholder="Ex. Phồng Tôm.." formControlName="shipperName">
+          <mat-icon matSuffix>drag_indicator</mat-icon>
+          <mat-error *ngIf="shipperName!.invalid && (shipperName!.dirty||shipperName!.touched )">
+            <mat-error *ngIf="shipperName!.errors?.['required']">
+              Chưa nhập tên shipper
+            </mat-error>
+            <mat-error *ngIf="shipperName!.errors?.['minlength']">
+              Tên tối thiểu 2 ký tự
+            </mat-error>
+            <mat-error *ngIf="shipperName!.errors?.['maxlength']">
+              Tên tối đa 50 ký tự ký tự
+            </mat-error>
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="import_secondRow">
+        <mat-form-field appearance="outline">
+          <mat-label>Staff Name</mat-label>
+          <input matInput placeholder="Ex. Johnny Sin.." formControlName="staffName">
+          <mat-icon matSuffix>drag_indicator</mat-icon>
+          <mat-error *ngIf="staffName!.invalid && (staffName!.dirty||staffName!.touched )">
+            <mat-error *ngIf="staffName!.errors?.['required']">
+              Chưa nhập tên nhân viên
+            </mat-error>
+            <mat-error *ngIf="staffName!.errors?.['minlength']">
+              Tên tối thiểu 2 ký tự
+            </mat-error>
+            <mat-error *ngIf="staffName!.errors?.['maxlength']">
+              Tên tối đa 50 ký tự ký tự
+            </mat-error>
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width" appearance="outline" [formGroup]="nameSearchGroup">
+          <mat-label>Choose a product</mat-label>
+          <input matInput
+                 aria-label="product name"
+                 [matAutocomplete]="auto"
+                 formControlName="nameGroup"
+                 placeholder="Ex .Sườn heo..."
+                 >
+          <mat-autocomplete #auto="matAutocomplete">
+            <mat-option *ngFor="let e of nameGroupOptions$ | async" [value]="e.name">
+              <img class="example-option-img me-3" aria-hidden [src]="baseHostImageUrl+e.picture" height="25">
+              <span>[{{e.isImported}}] {{e.name}}</span>
+            </mat-option>
+          </mat-autocomplete>
+          <mat-error *ngIf="nameGroup!.invalid && (nameGroup!.dirty||nameGroup!.touched )">
+            <mat-error *ngIf="nameGroup!.errors?.['required']">
+              Chưa chọn sản phẩm
+            </mat-error>
+          </mat-error>
+        </mat-form-field>
+        <div class="addProductById" >
+          <button (click)="getProductArray()" mat-fab color="primary" aria-label="Example icon button with a home icon">
+            <mat-icon>add</mat-icon>
+            </button>
+        </div>
+      </div>
+
+      <div class="import_thirdRow" *ngIf="this.tabs.indexOf('No Product')==-1">
+        <mat-tab-group  [selectedIndex]="selected.value" formArrayName="productByIdArray"
+               (selectedIndexChange)="selected.setValue($event)" >
+        <mat-tab *ngFor="let tab of tabs; let index = index" [label]="tab">
+          <ng-container [formGroupName]="index">
+
+            <div class="content_with_image_on_left">
+              <div class="image_container">
+                <img class="image_" [src]="baseHostImageUrl+formArrayProduct.at(index).get('picture')?.value" height="240px" width="240px" alt="">
+                <ng-template #noImage>
+                  <img class="image_" [src]="'assets/img/admin_img/noImage.jpg'" height="240px" width="240px" alt="">
+                </ng-template>
+              </div>
+  
+              <div class="right_content_wrapper">
+                <div class="right_content_firstRow">
+  
+                  <mat-form-field appearance="outline" class="mat-form-field-readonly">
+                    <mat-label>Product Id</mat-label>
+                    <input color="warn" matInput placeholder="Ex. ProductId.." formControlName="productID" readonly>
+                    <mat-icon matSuffix>drag_indicator</mat-icon>
+                  </mat-form-field>
+          
+                  <mat-form-field appearance="outline" class="mat-form-field-readonly">
+                    <mat-label>Name</mat-label>
+                    <input matInput placeholder="Ex. Dưa leo.." formControlName="name" readonly>
+                    <mat-icon matSuffix>drag_indicator</mat-icon>
+                    <!-- <mat-error *ngIf="formArrayProduct.at(index).get('name')!.invalid && (formArrayProduct.at(index).get('name')!.dirty||formArrayProduct.at(index).get('name')!.touched )">
+                      <mat-error *ngIf="formArrayProduct.at(index).get('name')!.errors?.['required']">
+                        Chưa nhập tên sản phẩm!
+                      </mat-error>
+                      <mat-error *ngIf="formArrayProduct.at(index).get('name')!.errors?.['minlength']">
+                        Tên sản phẩm tối thiểu 2 ký tự
+                      </mat-error>
+                      <mat-error *ngIf="formArrayProduct.at(index).get('name')!.errors?.['maxlength']">
+                        Tên sản phẩm tối đa 50 ký tự
+                      </mat-error>
+                    </mat-error> -->
+                    <input hidden="true" matInput formControlName="productID_FK_Detailed">
+                  </mat-form-field>
+        
+                  <div style="height:63.47px;width: 63.47px;display:flex;align-items:center;justify-content: right;">
+                    <button mat-fab color="warn"
+                          class="example-delete-tab-button"
+                          [disabled]="tabs.length === 1"
+                          (click)="removeTab(index,formArrayProduct.at(index).get('productID')!.value)">
+                      <mat-icon>clear</mat-icon>
+                    </button>
+                  </div>
+                </div>
+                <div class="second_content_firstRow">
+                  <mat-form-field appearance="outline">
+                    <mat-label>Price Import</mat-label>
+                    <input type="number" matInput placeholder="Ex. 10,000 vnd.." formControlName="priceImport" (input)="patchInputValue('priceImport',index)">
+                    <mat-icon matSuffix>drag_indicator</mat-icon>
+                    <mat-error *ngIf="formArrayProduct.at(index).get('priceImport')!.invalid && (formArrayProduct.at(index).get('priceImport')!.dirty||formArrayProduct.at(index).get('priceImport')!.touched )">
+                      <mat-error *ngIf="formArrayProduct.at(index).get('priceImport')!.errors?.['required']">
+                        Chưa nhập giá nhập hàng
+                      </mat-error>
+                      <mat-error *ngIf="formArrayProduct.at(index).get('priceImport')!.errors?.['min'] && !formArrayProduct.at(index).get('priceImport')!.errors?.['required']">
+                        Giá nhập tối thiểu là 0 vnd!
+                      </mat-error>
+                      <mat-error *ngIf="formArrayProduct.at(index).get('priceImport')!.errors?.['max'] && !formArrayProduct.at(index).get('priceImport')!.errors?.['required']">
+                        Giá nhập tối đa là 1 tỷ vnd!
+                      </mat-error>
+                    </mat-error>
+                  </mat-form-field>
+
+                  <mat-form-field appearance="outline">
+                    <mat-label>Quantity Import</mat-label>
+                    <input matInput placeholder="Ex. 1-500" formControlName="quantityImport" (input)="patchInputValue('quantityImport',index)" type="number">
+                    <mat-icon matSuffix>drag_indicator</mat-icon>
+                    <mat-error *ngIf="formArrayProduct.at(index).get('quantityImport')!.invalid && (formArrayProduct.at(index).get('quantityImport')!.dirty||formArrayProduct.at(index).get('quantityImport')!.touched )">
+                      <mat-error *ngIf="formArrayProduct.at(index).get('quantityImport')!.errors?.['required']">
+                        Chưa nhập số lượng
+                      </mat-error>
+                      <mat-error *ngIf="formArrayProduct.at(index).get('quantityImport')!.errors?.['pattern'] && !formArrayProduct.at(index).get('quantityImport')!.errors?.['required']">
+                        Số lượng phải là số nguyên >= 0
+                      </mat-error>
+                      <mat-error *ngIf="formArrayProduct.at(index).get('quantityImport')!.errors?.['max'] && !formArrayProduct.at(index).get('quantityImport')!.errors?.['required']">
+                        Số lượng tối đa là 1 triệu
+                      </mat-error>
+                    </mat-error>
+                  </mat-form-field>
+
+                  <mat-form-field appearance="outline" class="mat-form-field-readonly">
+                    <mat-label>Import Status</mat-label>
+                    <mat-select formControlName="status">
+                      <mat-option *ngFor="let a of statusList" [value]="a" disabled>
+                        {{a==1?"Có hàng":a==2?"Chờ bán":a==3?"Hết hàng":"Thu hồi"}}
+                      </mat-option>
+                    </mat-select>
+                    <!-- <mat-error *ngIf="formArrayProduct.at(index).get('status')!.invalid && (formArrayProduct.at(index).get('status')!.dirty||formArrayProduct.at(index).get('status')!.touched )">
+                      <mat-error *ngIf="formArrayProduct.at(index).get('status')!.errors?.['required']">
+                        Chưa chọn trạng thái nhập hàng
+                      </mat-error>
+                    </mat-error> -->
+                  </mat-form-field>
+
+                </div>
+
+                <div class="third_content_firstRow">
+                  <mat-form-field appearance="outline">
+                    <mat-label>Price Sell</mat-label>
+                    <input matInput placeholder="Ex. 10,000 vnd.." formControlName="priceSell" (input)="patchInputValue('priceSell',index)">
+                    <mat-icon matSuffix>drag_indicator</mat-icon>
+                    <mat-error *ngIf="formArrayProduct.at(index).get('priceSell')!.invalid && (formArrayProduct.at(index).get('priceSell')!.dirty||formArrayProduct.at(index).get('priceSell')!.touched )">
+                      <mat-error *ngIf="formArrayProduct.at(index).get('priceSell')!.errors?.['required']">
+                        Giá bán tối thiểu là 0 vnd!
+                      </mat-error>
+                      <mat-error *ngIf="formArrayProduct.at(index).get('priceSell')!.errors?.['min']">
+                        Giá bán tối thiểu là 0 vnd!
+                      </mat-error>
+                      <mat-error *ngIf="formArrayProduct.at(index).get('priceSell')!.errors?.['max']">
+                        Giá bán tối đa là 1 tỷ vnd!
+                      </mat-error>
+                    </mat-error>
+                  </mat-form-field>
+
+                  <mat-form-field appearance="outline" class="mat-form-field-readonly">
+                    <mat-label>Quantity In Store</mat-label>
+                    <input matInput placeholder="Ex. 1-500" formControlName="quantity" readonly>
+                    <mat-icon matSuffix>drag_indicator</mat-icon>
+                    <!-- <mat-error *ngIf="formArrayProduct.at(index).get('quantity')!.invalid && (formArrayProduct.at(index).get('quantity')!.dirty||formArrayProduct.at(index).get('quantity')!.touched )">
+                      <mat-error *ngIf="formArrayProduct.at(index).get('quantity')!.errors?.['required']">
+                        Chưa nhập số lượng
+                      </mat-error>
+                      <mat-error *ngIf="formArrayProduct.at(index).get('quantity')!.errors?.['pattern'] && !formArrayProduct.at(index).get('quantity')!.errors?.['required']">
+                        Số lượng phải là số nguyên >= 0
+                      </mat-error>
+                      <mat-error *ngIf="formArrayProduct.at(index).get('quantity')!.errors?.['max'] && !formArrayProduct.at(index).get('quantity')!.errors?.['required']">
+                        Số lượng tối đa là 1 triệu
+                      </mat-error>
+                    </mat-error> -->
+                  </mat-form-field>
+
+                  <mat-form-field appearance="outline" class="mat-form-field-readonly">
+                    <mat-label>Available</mat-label>
+                    <mat-select formControlName="available">
+                      <mat-option *ngFor="let a of availableList" [value]="a" disabled>
+                        {{a?'Còn hàng':'Hết hàng'}}
+                      </mat-option>
+                    </mat-select>
+                    <!-- <mat-error *ngIf="formArrayProduct.at(index).get('available')!.invalid && (formArrayProduct.at(index).get('available')!.dirty||formArrayProduct.at(index).get('available')!.touched )">
+                      <mat-error *ngIf="formArrayProduct.at(index).get('available')!.errors?.['required']">
+                        Chưa chọn trạng thái
+                      </mat-error>
+                    </mat-error> -->
+                  </mat-form-field>
+
+                  <mat-form-field appearance="outline">
+                    <mat-label>Enter expiration (if any)</mat-label>
+                    <mat-date-range-input [rangePicker]="picker2">
+                      <input matStartDate placeholder="Date release" formControlName="dateRelease" (dateChange)="patchInputValue('dateRelease',index)">
+                      <input matEndDate placeholder="Date end" formControlName="dateEnd" (dateChange)="patchInputValue('dateEnd',index)">
+                    </mat-date-range-input>
+                    <mat-error *ngIf="formArrayProduct.at(index).get('dateEnd')!.invalid && (formArrayProduct.at(index).get('dateEnd')!.dirty||formArrayProduct.at(index).get('dateEnd')!.touched )">
+                      <mat-error *ngIf="formArrayProduct.at(index).get('dateRelease')!.errors?.['required']">
+                          Chưa chọn ngày phát hành!
+                        </mat-error>
+                        <mat-error *ngIf="formArrayProduct.at(index).get('dateEnd')!.errors?.['required'] && !formArrayProduct.at(index).get('dateRelease')!.errors?.['required']">
+                          Chưa chọn ngày hết hạn
+                        </mat-error>
+                    </mat-error>
+                    <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                    <mat-date-range-picker #picker2></mat-date-range-picker>
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+
+          </ng-container>
+        </mat-tab>
+      </mat-tab-group>
+      </div>
+      <mat-error *ngIf="formImport!.invalid && (formImport!.dirty||formImport!.touched )">
+        <mat-error *ngIf="formImport.invalid">
+          Có lỗi trên form, nếu không thấy lỗi thì vui lòng kiểm tra từng tab Product!
+        </mat-error>
+      </mat-error>
+    </div>
+ </div>
+ 
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-raised-button color="warn" mat-dialog-close >Cancel</button>
+  <button mat-raised-button color="accent" (click)="resetForm()">Reset</button>
+  <!-- <button mat-raised-button color="accent" [mat-dialog-close]="true" cdkFocusInitial>Save</button> -->
+  <button mat-raised-button color="primary" (click)="submit()">Save</button>
+</mat-dialog-actions>

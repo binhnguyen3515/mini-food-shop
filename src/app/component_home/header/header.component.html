@@ -1,0 +1,128 @@
+<header class="header c-12">
+  <div class="">
+    <nav class="header__navbar">
+  
+        <!-- Header with search on mobile start  -->
+  
+        <label for="mobile-menu-chekbox" class="header__mobile-menu hide-on-tablet">
+            <i class="fas fa-bars header__mobile-menu-icon"></i>
+        </label>
+        
+        <label for="mobile-search-chekbox" class="header__mobile-search">
+            <i class="fas fa-search header__mobile-search-icon"></i>
+        </label>
+  
+        <input type="checkbox" hidden id="mobile-search-chekbox" class="header__msearch-chekbox">
+  
+         <!-- Header with search on mobile end  -->
+  
+        <a [routerLink]="['/home/product']" class="logo">
+            <img src="assets/img/logo/Logominifood.jpg"  alt="">
+        </a>
+        <div class="address__customer hide-on-mobile">
+            <div class="address__customer-icon">
+                <i class="fas fa-map-marker-alt"></i>
+            </div>
+            <div class="address__link">
+                <span class="address__link-name">Địa chỉ: p.tan so nhi, quan tan phu</span>
+            </div>
+        </div>
+  
+  
+     <!-- Header with search  -->
+            <div class="header__search">                       
+             <div class="header__search-input-wrap">
+                    <!-- <input type="text" class="header__search-input" (input)="searchByNameSubmit($event)" -->
+                    <input type="text" class="header__search-input" [value]="pasteName$ | async"
+                    placeholder="Tìm kiếm trên 10k sản phẩm" #inputSearchName>
+                    <!-- search history -->
+                <div class="header__search-history">
+                    <h3 class="header__search-history-heading">{{hideSearchBoxB==true?"Lịch sử tìm kiếm":"Kết quả tìm kiếm"}}</h3>
+                    <ul class="header__search-history-list">
+                        
+                        <li class="header__search-history-item" [ngClass]="{'hideSearchBoxA':!hideSearchBoxA}" *ngFor="let n of (listNameAfterSearch$ | async )">
+                            <a (click)="pasteName(n.name)">{{n.name}}</a>
+                        </li>
+                        <li class="header__search-history-item" [ngClass]="{'hideSearchBoxB':!hideSearchBoxB}" *ngFor="let n of (listHistoryName$|async)">
+                            <a (click)="pasteName(n.name)">{{n.name}}</a>
+                        </li>
+                        <!-- <li class="header__search-history-item">
+                            <a href="">thịt ba chỉ</a>
+                        </li>
+                        <li class="header__search-history-item">
+                            <a href="">ly nhựa</a>
+                        </li> -->
+                    </ul>
+                </div>
+                <ng-template #noItem></ng-template>
+                </div>                            
+                <button class="header__search-btn" [routerLink]="['/home/search',typeOfName(searchName)]" (click)="submitSearch()">
+                    <i class="header__search-btn-icon fas fa-search"></i>
+                </button>
+            </div>
+  
+            <!-- Lịch sử mua hàng  -->
+            <div class="historis__shopping hide-on-mobile"style="cursor: pointer;">
+                <a [routerLink]="['/home/paymentLog']" title="Đơn hàng của {{auth.isLoggedIn()?tokenStorage.getUser().phone:sharedData.currentValue}}" class="historis__shopping-link js-buy-ticket" style="cursor: pointer;"><span style="white-space: nowrap;">Đơn hàng</span>
+                    <p class="order_By_Name" >của {{auth.isLoggedIn()?tokenStorage.getUser().phone:sharedData.currentValue}}</p>
+                </a>
+            </div>
+            
+  
+            <a class="header__cart" style="cursor: pointer;">
+                <div class="header__cart-wrap ">
+                    <i class="header__cart-icon fas fa-shopping-cart" [routerLink]="['/home/cart']"></i>
+                     <span class="header__cart-notice" >{{totalItems}}</span>
+                    
+                         
+                    <!-- No cart:  header__cart-list--no-cart-->
+                    <div class="header__cart-list ">
+                        <!--No item-->
+                        <div class="header__cart-list-no-item" [ngClass]="{'hidden':cartService.isEmptyCart == true}">
+                            <img src="assets/img/logo/giohang.png" alt="" class="header__cart-no-cart-img">
+                            <span class="header__cart-list-no-cart-msg">
+                                Chưa có sản phẩm
+                            </span>
+                        </div>
+                        <!--No item edge-->
+
+                        <!--Has item-->
+                       <div class="header__cart-list-has-item" [ngClass]="{'hidden':cartService.isEmptyCart == false}">
+                        <h4 class="header__cart-heading">Sản phẩm đã thêm</h4>
+                        <ul class="header__cart-list-item">
+                            <!--Cart item  -->
+                         <li class="header__cart-item" *ngFor="let i of cartItems">
+                                <img [src]="baseHostImageUrl+i.picture" alt="" class="header__cart-img">
+                                <div class="header__cart-item-info">
+                                    <div class="header__cart-item-head">
+                                        <h5 class="header__cart-item-name" style="text-overflow: ellipsis;white-space: nowrap;display:inline-block;max-width: 150px;">{{i.name}}</h5>
+                                        <div class="header__cart-item-price-wrap">
+                                            <span class="header__cart-item-price">{{i.discountDTO?(i.productDetailsDTO.priceSell*(1-i.discountDTO.percentage)|number):i.productDetailsDTO.priceSell | number}}đ</span>
+                                            <span class="header__cart-item-multiply">x</span>
+                                            <span class="header__cart-item-qnt">{{i.productDetailsDTO.quantity}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="header__cart-item-body">
+                                     <span class="header__cart-item-description" style="text-overflow: ellipsis;white-space: nowrap;display:inline-block;max-width: 120px;">
+                                         Phân loại: {{i.categorySub.name}}
+                                     </span>
+                                     <span class="header__cart-item-remove"(click)="removeItem(i.productDetailsDTO.id)">Xoá</span>
+                                    </div>
+                                </div>
+                             </li>
+                        </ul>
+   
+                        <button class="header__car-view-cart btn btn--green" [routerLink]="['/home/cart']">Xem giỏ hàng</button> 
+                         <!--Has item edge-->
+                       </div>                              
+                    </div>                                
+                </div>
+                <span class="header__cart-name" [routerLink]="['/home/cart']">Giỏ hàng</span>
+            </a>
+    </nav>
+  </div>  
+</header>
+
+ <!-- login model -->
+
+<!-- <app-login [toggleModal]="toggleModal" (closeAction)="onCloseAction($event)"></app-login> -->

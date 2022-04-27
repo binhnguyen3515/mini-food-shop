@@ -1,0 +1,23 @@
+.accordion-collapse.show{
+    transition: all, 0.6s;
+}
+.accordion-collapse a{
+    transition: all, 0.6s;
+}
+.accordion,.accordion *{
+    transition: all, 0.6s;
+}
+#accordionExample > div:nth-child(1){
+    transition: all, 0.6s;
+}
+.collapsing{
+    transition: all, 0.6s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .collapsing ,.accordion{
+        transition-property: height, visibility;
+        transition-duration: .35s;
+    }
+    
+}

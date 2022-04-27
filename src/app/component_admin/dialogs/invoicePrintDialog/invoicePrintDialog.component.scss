@@ -1,0 +1,172 @@
+.invoice_header {
+  background-color: #0D83DD;
+  color: white;
+  display: grid;
+  grid-template-columns: 5fr 2.5fr 3fr;
+  padding-block: 40px;
+  padding-inline: 30px;
+  gap: 30px;
+  margin-top: -24px;
+}
+
+.invoice_title {
+  font-size: 50px;
+  margin-bottom: 0;
+  line-height: 60px;
+}
+
+// :host::ng-deep.mat-dialog-container{
+//     padding-block:0px !important;
+//     width:100%;
+//     max-width: 850px;
+//     border-radius: 0;
+// }
+.invoice_header_content1 p,
+.invoice_header_content2 p {
+  margin-bottom: 0;
+  text-align: right;
+}
+
+.invoice_client {
+  display: grid;
+  grid-template-columns: 5fr 2fr 3fr;
+  gap: 40px;
+  padding-block: 40px;
+  padding-inline: 30px;
+}
+
+.invoice_client_info h3,
+.invoice_info h3,
+.invoice_total h3 {
+  margin-bottom: 0;
+  font-weight: bold
+}
+
+.invoice_total h3 {
+  text-align: right;
+}
+
+.invoice_total .invoice_total_money {
+  color: #0D83DD;
+  font-size: 40px;
+  font-weight: 400;
+  margin-top: 10px;
+}
+
+.invoice_client_blur {
+  color: #a2a2a2;
+}
+
+.invoice_main_content {
+  margin-inline: 24px;
+  border-top: 4px solid #0D83DD;
+  min-height: 340px;
+}
+
+.invoice_main_content .invoice_main_content_header {
+  display: grid;
+  grid-template-columns: 6fr 2fr 1fr 1fr 2fr;
+  gap: 30px;
+  padding-inline: 3px;
+  padding-top: 14px;
+  margin-bottom: 0;
+}
+
+.invoice_main_content .invoice_main_content_header h3 {
+  color: #0D83DD;
+  font-weight: bold;
+}
+
+.invoice_main_content_item {
+  display: grid;
+  grid-template-columns: 6fr 2fr 1fr 1fr 2fr;
+  gap: 30px;
+  padding-inline: 3px;
+  padding-block: 10px;
+  border-bottom: 1px solid rgba(128, 128, 128, 0.709);
+}
+
+.invoice_main_content_item h3 {
+  margin-bottom: 0;
+  font-weight: bold;
+}
+
+.invoice_total_amount {
+  display: grid;
+  grid-template-columns: 10fr 2fr;
+  gap: 40px;
+  padding-inline: 30px;
+  padding-bottom: 10px;
+  margin-top: 20px;
+}
+
+.invoice_total_amount .invoice_total_amount_title h3,
+.invoice_total_amount .invoice_total_amount_money h3 {
+  text-align: right;
+  font-weight: bold;
+}
+
+.invoice_total_amount .invoice_total_amount_title h3 {
+  color: #0D83DD;
+}
+
+.invoice_footer {
+  padding-inline: 30px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.invoice_footer h3 {
+  margin-bottom: 0;
+}
+
+.invoice_footer_title {
+  font-weight: bold;
+}
+.hide-when-print{
+    margin-top: auto;
+}
+@media print {
+  body * {
+    visibility: hidden;
+    background-color:white !important;
+    display: none;
+  }
+  .hide-when-print{
+      display: none;
+  }
+  #printable,
+  #printable * {
+    visibility: visible;
+  }
+
+  #printable {
+    background-color: white;
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    margin: 0;
+    padding: 15px;
+    font-size: 14px;
+    line-height: 18px;
+    min-height: 100vh;
+  }
+  .cdk-overlay-pane {
+    width: 100%;
+    max-width: none;
+  }
+  
+  :host::ng-deep.mat-dialog-container {
+   width: 100vw;
+//    height: 100%;
+//    min-height: 100vh;
+//    padding: 0;
+//    margin: 0;
+  }
+
+  .invoice_header {
+    margin-top: unset;
+  }
+}

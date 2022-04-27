@@ -1,0 +1,293 @@
+<input type="checkbox"  id="mobile-menu-chekbox" hidden class="header__menu-chekbox" style="z-index: 100;">
+
+    <nav class="category">
+        <h3 class="category__heading">
+            <i class="fas fa-bars category__heading-icon"></i>DANH MỤC</h3>
+
+        <ul class="category-list ">
+            <li class=" category-item--actice">
+                <a href="" class="category-item__link-sale fw-bold"><I class="bhx-productpromo__dark"></I>KHUYẾN MÃI HOT</a>
+            </li>
+            <!--  bootsrtap -->
+            <div class="accordion" id="accordionExample">
+                <ng-container *ngIf="cate$;else loading">
+                  <div class="" *ngFor="let c of cate$">
+                    <h2 class="accordion-header" >
+                      <button class="category__list-link collapsed" type="button" data-bs-toggle="collapse" attr.data-bs-target="#cate{{c.id}}"  >
+                        {{c.name}}
+                      </button>
+                      <i class="far fa-chevron-down category__list-link--icon"></i>
+                    </h2>
+                    <div attr.id="cate{{c.id}}" class="accordion-collapse collapse" data-bs-parent="#accordionExample" *ngFor="let s of c.categorySubDTO">
+                      <div class="">
+                          <a [routerLink]="['/home',s.id]" class="category-item__link">{{s.name}}</a>
+                      </div>
+                    </div>
+                  </div>
+                </ng-container>
+                
+                <ng-template #loading>
+                  <main class="mt-3 d-flex h-100 align-items-center">
+                    <div class="loader mx-auto" style="zoom: 0.5;"></div>
+                  </main>
+                </ng-template>
+
+                <!-- <div class="">
+                  <h2 class="accordion-header" >
+                    <button class="category__list-link collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
+                      THỊT, CÁ, HẢI SẢN
+                    </button>
+                  </h2>
+                  <div id="collapse2" class="accordion-collapse collapse"  data-bs-parent="#accordionExample">
+                    <div class="">
+                        <a href="" class="category-item__link">Thịt heo các loại</a>
+                    </div>
+                    <div class="">
+                        <a href="" class="category-item__link">Thịt cá các loại</a>
+                    </div>
+                    <div class="">
+                        <a href="" class="category-item__link">Thịt gà các loại</a>
+                    </div>
+                    <div class="">
+                        <a href="" class="category-item__link">Thịt bò các loại</a>
+                    </div>
+                  </div>
+                </div>
+                <div class="">
+                  <h2 class="accordion-header" >
+                    <button class="category__list-link collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3" aria-expanded="false" aria-controls="collapse3">
+                      BÁNH KẸO CÁC LOẠI
+                    </button>
+                  </h2>
+                  <div id="collapse3" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                    <div class="">
+                        <a href="" class="category-item__link">Bánh ngọt</a>
+                    </div>
+                    <div class="">
+                        <a href="" class="category-item__link">Bánh tráng</a>
+                    </div>
+                    <div class="">
+                        <a href="" class="category-item__link">Bánh kem</a>
+                    </div>
+                    <div class="">
+                        <a href="" class="category-item__link">Bánh bò</a>
+                    </div>
+                  </div>
+                </div>
+                <div class="">
+                    <h2 class="accordion-header" >
+                      <button class="category__list-link collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse4" aria-expanded="false" aria-controls="collapse4">
+                        THỊT, CÁ, HẢI SẢN
+                      </button>
+                    </h2>
+                    <div id="collapse4" class="accordion-collapse collapse"  data-bs-parent="#accordionExample">
+                      <div class="">
+                          <a href="" class="category-item__link">Thịt heo các loại</a>
+                      </div>
+                      <div class="">
+                          <a href="" class="category-item__link">Thịt cá các loại</a>
+                      </div>
+                      <div class="">
+                          <a href="" class="category-item__link">Thịt gà các loại</a>
+                      </div>
+                      <div class="">
+                          <a href="" class="category-item__link">Thịt bò các loại</a>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="">
+                    <h2 class="accordion-header" >
+                      <button class="category__list-link collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse5" aria-expanded="false" aria-controls="collapse5">
+                        BÁNH KẸO CÁC LOẠI
+                      </button>
+                    </h2>
+                    <div id="collapse5" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                      <div class="">
+                          <a href="" class="category-item__link">Bánh ngọt</a>
+                      </div>
+                      <div class="">
+                          <a href="" class="category-item__link">Bánh tráng</a>
+                      </div>
+                      <div class="">
+                          <a href="" class="category-item__link">Bánh kem</a>
+                      </div>
+                      <div class="">
+                          <a href="" class="category-item__link">Bánh bò</a>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="">
+                    <h2 class="accordion-header" >
+                      <button class="category__list-link collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse6" aria-expanded="false" aria-controls="collapse6">
+                        THỊT, CÁ, HẢI SẢN
+                      </button>
+                    </h2>
+                    <div id="collapse6" class="accordion-collapse collapse"  data-bs-parent="#accordionExample">
+                      <div class="">
+                          <a href="" class="category-item__link">Thịt heo các loại</a>
+                      </div>
+                      <div class="">
+                          <a href="" class="category-item__link">Thịt cá các loại</a>
+                      </div>
+                      <div class="">
+                          <a href="" class="category-item__link">Thịt gà các loại</a>
+                      </div>
+                      <div class="">
+                          <a href="" class="category-item__link">Thịt bò các loại</a>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="">
+                    <h2 class="accordion-header" >
+                      <button class="category__list-link collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse7" aria-expanded="false" aria-controls="collapse7">
+                        BÁNH KẸO CÁC LOẠI
+                      </button>
+                    </h2>
+                    <div id="collapse7" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                      <div class="">
+                          <a href="" class="category-item__link">Bánh ngọt</a>
+                      </div>
+                      <div class="">
+                          <a href="" class="category-item__link">Bánh tráng</a>
+                      </div>
+                      <div class="">
+                          <a href="" class="category-item__link">Bánh kem</a>
+                      </div>
+                      <div class="">
+                          <a href="" class="category-item__link">Bánh bò</a>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="">
+                    <h2 class="accordion-header" >
+                      <button class="category__list-link collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse8" aria-expanded="false" aria-controls="collapse8">
+                        THỊT, CÁ, HẢI SẢN
+                      </button>
+                    </h2>
+                    <div id="collapse8" class="accordion-collapse collapse"  data-bs-parent="#accordionExample">
+                      <div class="">
+                          <a href="" class="category-item__link">Thịt heo các loại</a>
+                      </div>
+                      <div class="">
+                          <a href="" class="category-item__link">Thịt cá các loại</a>
+                      </div>
+                      <div class="">
+                          <a href="" class="category-item__link">Thịt gà các loại</a>
+                      </div>
+                      <div class="">
+                          <a href="" class="category-item__link">Thịt bò các loại</a>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="">
+                    <h2 class="accordion-header" >
+                      <button class="category__list-link collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse9" aria-expanded="false" aria-controls="collapse9">
+                        BÁNH KẸO CÁC LOẠI
+                      </button>
+                    </h2>
+                    <div id="collapse9" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                      <div class="">
+                          <a href="" class="category-item__link">Bánh ngọt</a>
+                      </div>
+                      <div class="">
+                          <a href="" class="category-item__link">Bánh tráng</a>
+                      </div>
+                      <div class="">
+                          <a href="" class="category-item__link">Bánh kem</a>
+                      </div>
+                      <div class="">
+                          <a href="" class="category-item__link">Bánh bò</a>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="">
+                    <h2 class="accordion-header" >
+                      <button class="category__list-link collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse10" aria-expanded="false" aria-controls="collapse10">
+                        THỊT, CÁ, HẢI SẢN
+                      </button>
+                    </h2>
+                    <div id="collapse10" class="accordion-collapse collapse"  data-bs-parent="#accordionExample">
+                      <div class="">
+                          <a href="" class="category-item__link">Thịt heo các loại</a>
+                      </div>
+                      <div class="">
+                          <a href="" class="category-item__link">Thịt cá các loại</a>
+                      </div>
+                      <div class="">
+                          <a href="" class="category-item__link">Thịt gà các loại</a>
+                      </div>
+                      <div class="">
+                          <a href="" class="category-item__link">Thịt bò các loại</a>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="">
+                    <h2 class="accordion-header" >
+                      <button class="category__list-link collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse11" aria-expanded="false" aria-controls="collapse11">
+                        BÁNH KẸO CÁC LOẠI
+                      </button>
+                    </h2>
+                    <div id="collapse11" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                      <div class="">
+                          <a href="" class="category-item__link">Bánh ngọt</a>
+                      </div>
+                      <div class="">
+                          <a href="" class="category-item__link">Bánh tráng</a>
+                      </div>
+                      <div class="">
+                          <a href="" class="category-item__link">Bánh kem</a>
+                      </div>
+                      <div class="">
+                          <a href="" class="category-item__link">Bánh bò</a>
+                      </div>
+                    </div>
+                  </div> -->
+                
+              </div>
+              <!-- categore search -->
+              <div class="category__search">
+              <div class="category__search-item">
+                <div class="category__search-input-wrap">
+                    <input type="text" class="category__search-input"
+                    placeholder="Tìm hơn 300 nhóm hàng">
+                </div>                            
+                <button class="category__search-btn">
+                    <i class="category__search-btn-icon fas fa-search"></i>
+                </button>
+            </div>
+        </div>
+        <li class="category-item">
+            <div class="category-item--Utilities">
+                <i class="bhx-productexpired"></i>
+                <a href="" class="category-item--Utilities-link">Xả kho giá gốc</a>
+            </div>
+        </li>
+        <li class="category-item">
+            <div class="category-item--Utilities">
+            <i class="bhx-storecount"></i>                                    
+                <a href="" class="category-item--Utilities-link">Danh sách cửa hàng trên toàn quốc</a>
+            </div>
+        </li>
+        <li class="category-item">
+            <div class="category-item--Utilities">
+                <a href="" class="category-item--Utilities-link">Sim, thẻ cào điện thoại</a>
+            </div>
+        </li>
+        <li class="category-item">
+            <div class="category-item--Utilities">
+                <a href="" class="category-item--Utilities-link">Trả tiền điện nước</a>
+            </div>
+        </li>
+                  
+        <li class="category-item">
+            <div class="category-item--Utilities">
+                <a href="" class="category-item--Utilities-link">Phiếu mua hàng</a>
+            </div>
+        </li>
+
+        </ul>
+    </nav>
+

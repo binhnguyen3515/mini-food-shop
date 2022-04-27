@@ -1,0 +1,94 @@
+.content_with_image_on_left{
+    margin-top:10px;
+    display: grid;
+    grid-template-columns: 250px 1fr;
+    gap: 10px;
+}
+.image_container{
+    height:250px;
+    width:250px;
+    padding: 10px;
+    border: 1px solid var(--mainFormColor);
+}
+.image_container .image_{
+    width: 100%;
+    height: 100%; 
+    object-fit: contain;
+}
+.right_content_firstRow{
+    display: grid;
+    grid-template-columns:1fr 3fr 65px;
+    gap: 10px;
+}
+.second_content_firstRow{
+    display: grid;
+    grid-template-columns:repeat(3,1fr);
+    gap: 10px;
+}
+.third_content_firstRow{
+    display: grid;
+    grid-template-columns:repeat(4,1fr);
+    gap: 10px;
+}
+:host mat-form-field.mat-form-field {
+    font-size: 16px;
+    color: var(--mainFormColor);
+}
+:host ::ng-deep .mat-focused .mat-form-field-label {
+    /*change color of label*/
+    color: var(--mainFormColor) !important;
+}
+
+:host ::ng-deep.mat-form-field-underline {
+/*change color of underline*/
+background-color: var(--mainFormColor) !important;
+} 
+
+:host ::ng-deep.mat-form-field-ripple {
+/*change color of underline when focused*/
+background-color: var(--mainFormColor) !important;
+}
+
+:host ::ng-deep.mat-form-field-appearance-outline .mat-form-field-outline {
+    color: var(--mainFormColor) !important;
+}
+
+:host ::ng-deep.mat-form-field-appearance-outline .mat-form-field-outline-end,
+:host ::ng-deep.mat-form-field-appearance-outline .mat-form-field-outline-start {
+    border-radius: 0 !important;
+}
+
+.import_firstRow{
+    display:grid;
+    grid-template-columns: 1fr 2fr 1fr 1fr;
+    gap: 10px;
+}
+
+.import_secondRow{
+    display:grid;
+    grid-template-columns: 1fr 2fr 2fr;
+    gap: 10px;
+}
+.hidden{
+    opacity: 0;
+    font-size:0;
+}
+.addProductById{
+    height:63.47px;
+    display:flex;
+    align-items: center;
+}
+
+.hidden{
+    display:none !important;
+}
+:host::ng-deep.mat-tab-label{
+    background-color:#3f51b579;
+    font-weight: bold;
+    /* color: white !important; */
+}
+:host::ng-deep.mat-tab-label-active{
+    background-color: #3F51B5 !important;
+    color: white !important;
+}
+

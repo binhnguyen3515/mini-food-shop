@@ -1,0 +1,76 @@
+
+<mat-dialog-content class="mat-typography" id="printable" style="height:100%;max-height: 950px;overflow: unset;padding: 1px;">
+  <div class="invoice_header">
+    <h1 class="invoice_title">INVOICE</h1>
+    <div class="invoice_header_content1">
+      <p>+84 91 380 6577</p>
+      <p>MiniFoodShop@gmail.com</p>
+      <p>MiniFoodShop.com</p>
+    </div>
+    <div class="invoice_header_content2">
+      <p>210 Hoang Hoa Tham Street</p>
+      <p>BinhThanh District</p>
+      <p>HCM City, VietNam</p>
+    </div>
+  </div>
+
+  <div class="invoice_client">
+    <div class="invoice_client_info">
+      <h3 class="invoice_client_blur">Billed To</h3>
+      <h3>{{(userInfo$|async)?.name}}</h3>
+      <h3>{{(invoice_info$|async)?.address}}</h3>
+      <h3 class="invoice_client_blur">Phone Number</h3>
+      <h3>{{(invoice_info$|async)?.phone}}</h3>
+    </div>
+    <div class="invoice_info">
+      <h3 class="invoice_client_blur">Invoice Number</h3>
+      <h3>INV-{{data?.id}}</h3>
+      <h3>&nbsp;</h3>
+      <h3 class="invoice_client_blur">Date Of Issue</h3>
+      <h3>{{(invoice_info$|async)?.date|date:'dd-MM-yyyy'}}</h3>
+    </div>
+    <div class="invoice_total">
+      <h3 class="invoice_client_blur">Invoice Total(Vnđ)</h3>
+      <h3 class="invoice_total_money">{{(totalMoney$|async)?.totalMoneyNet|number}}</h3>
+    </div>
+  </div>
+
+  <div class="invoice_main_content">
+    <div class="invoice_main_content_header">
+      <h3>Item-Name</h3>
+      <h3 class="text-end">Unit Cost</h3>
+      <h3 class="text-end">Qty</h3>
+      <h3 class="text-end">Discount</h3>
+      <h3 class="text-end">Amount</h3>
+    </div>
+    <div class="invoice_main_content_item" *ngFor="let i of invoice_list$|async">
+      <h3>{{i.name}}</h3>
+      <h3 class="text-end">{{i.price|number}}</h3>
+      <h3 class="text-end">{{i.quantity}}</h3>
+      <h3 class="text-end">{{i.discount*100}}%</h3>
+      <h3 class="text-end">{{i.price*i.quantity*(1-i.discount)|number}} đ</h3>
+    </div>
+  </div>
+
+  <div class="invoice_total_amount">
+    <div class="invoice_total_amount_title">
+      <h3>Gross Amount</h3>
+      <h3>MemberShip Deducted</h3>
+      <h3>Total</h3>
+    </div>
+    <div class="invoice_total_amount_money">
+      <h3>{{(totalMoney$|async)?.totalMoney|number}} đ</h3>
+      <h3>{{((totalMoney$|async)?.totalMoney - (totalMoney$|async)?.totalMoneyNet)|number}} đ</h3>
+      <h3>{{(totalMoney$|async)?.totalMoneyNet|number}} đ</h3>
+    </div>
+  </div>
+
+  <div class="invoice_footer">
+    <div class="invoice_footer_staff">
+      <h3 class="invoice_footer_title invoice_client_blur">Person In Charge</h3>
+      <h3 class="pb-3 fw-bold">{{tokenStorage.getUser().name}}</h3>
+    </div>
+    <button (click)="onPrint()" class="hide-when-print" mat-icon-button color="warn"><mat-icon>print</mat-icon></button>
+  </div>
+  
+</mat-dialog-content>

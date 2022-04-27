@@ -1,0 +1,45 @@
+<div class="product_container_wrapper">
+  <div class=product__container *ngIf="productData$.length>0">
+      <ng-container *ngFor="let i of productData$ | paginate:{itemsPerPage:8,currentPage:page_product,
+        totalItems:productData$.length}">
+        <div class="col l-3 c-6 "  *ngIf="i.productDetailsDTO.available && i.productDetailsDTO.priceSell!==0&&i.productDetailsDTO.quantity!==0">
+            <div class="home-product-item">
+                <a [routerLink]="['/home/detail',i.id]">
+                    <!-- <div class="home-product-item__img" style="background-image: url(https://cdn.tgdd.vn/Products/Images/3003/228901/bhx/khan-uot-kinkin-khong-mui-goi-100-mieng-202104201705051404_300x300.jpg);"></div> -->
+                    <div class="home-product-item__img" style="background-image: url({{baseHostImageUrl+i.picture}});"></div>
+                </a>
+                <h4 class="home-product-item__name">
+                    {{i.name}}
+                </h4>
+                <div class="home-product-item__price">
+                    <span class="home-product-item__price-old" *ngIf="i.discountDTO">{{i.productDetailsDTO.priceSell | number}}đ</span>
+                    <span class="home-product-item__price-current">{{i.discountDTO?(i.productDetailsDTO.priceSell*(1-i.discountDTO.percentage)|number):i.productDetailsDTO.priceSell | number}}đ</span>
+                </div>
+                <div class="home-product-item__promotion">
+                    <span class="home-product-item__description">{{i.description}}</span>                                               
+                </div>
+                <div style="text-align: center;">
+                <a (click)="addToCart(i)">
+                    <button class="btn-cart-product btn btn--green">Mua hàng</button>
+                </a>
+                </div>
+                <!-- khuyen mai va yeu thich -->
+                <div class="home-product-item__favourite" *ngIf="i.starAveraged && i.starAveraged>=3">
+                    <i class="fas fa-check"></i>
+                    <span>yêu thích</span>
+                </div>
+                <div class="home-product-item__sale-off" *ngIf="i.discountDTO || i.discountDTO?i.discountDTO.percentage!==0:false">
+                    <!-- <span class="home-product-item__sale-off-percent">{{i.discountDTO[0].percentage*100}}%</span> -->
+                    <span class="home-product-item__sale-off-percent">{{i.discountDTO?i.discountDTO.percentage*100:0}}%</span>
+                    <span class="home-product-item__sale-off-label">GIẢM</span>
+                </div>
+            </div>
+        </div>
+      </ng-container>
+    </div>
+    <div class="mt-3">
+        <div class="col l-12 c-12">
+            <pagination-controls (pageChange)="page_product = $event"></pagination-controls>
+        </div>
+    </div>
+</div>

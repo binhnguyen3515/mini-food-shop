@@ -1,0 +1,445 @@
+<app-sharedAdminHeader #entity [entity]="setEntity"></app-sharedAdminHeader>
+<div class="dashboard_container">
+    <div class="first_row_content" *ngIf="firstRowContent$">
+        <div class="item">
+            <p class="title_1">{{firstRowContent$.todayOrder}}</p>
+            <p class="title_2">NEW ORDER(S)</p>
+            <p class="title_3">Total: {{firstRowContent$.totalOrder}}</p>
+            <div class="dark_column">
+
+            </div>
+        </div>
+        <div class="item">
+            <p class="title_1">{{firstRowContent$.available}}</p>
+            <p class="title_2">AVAILABLE PRODUCT</p>
+            <p class="title_3">Total: {{firstRowContent$.totalProduct}}</p>
+            <div class="dark_column">
+
+            </div>
+        </div>
+        <div class="item">
+            <p class="title_1">{{firstRowContent$.todayIncome|number: '1.0-2'}}</p>
+            <p class="title_2">INCOME</p>
+            <p class="title_3">Total: {{firstRowContent$.totalIncome|number: '1.0-2'}}</p>
+            <div class="dark_column">
+
+            </div>
+        </div>
+        <div class="item">
+            <p class="title_1">{{firstRowContent$.totalCustomer}}</p>
+            <p class="title_2">TOTAL CUSTOMER</p>
+            <p class="title_3">Total Account: {{firstRowContent$.totalAccount}}</p>
+            <div class="dark_column">
+
+            </div>
+        </div>
+    </div>
+
+    <div class="second_row_content">
+
+      <div class="item_wrapper">
+        <dx-chart id="item" [rotated]="true" class="dx-viewport" [dataSource]="productSoldByCategory$" palette="Violet">
+          <dxo-title
+            text="Number of Products Sold By Categories"
+            subtitle=""
+          >
+          </dxo-title>
+          <dxo-argument-axis [inverted]="true"></dxo-argument-axis>
+          <dxi-series *ngFor="let p of productSoldByCategory$"  valueField="value" name="{{p.name}}"></dxi-series>
+          <dxo-common-series-settings
+            argumentField="name"
+            type="bar"
+            valueField="value"
+            [ignoreEmptyPoints]="true"
+            hoverMode="allArgumentPoints"
+            selectionMode="allArgumentPoints"
+          >
+          <dxo-label
+          position="inside"
+            [visible]="true"
+            [format]="{
+              type: 'fixedPoint',
+              precision: 0
+            }"
+          >
+          </dxo-label>
+          
+          </dxo-common-series-settings>
+          
+          <dxo-export [enabled]="true"></dxo-export>
+          <dxo-series-template nameField="name"></dxo-series-template>
+  
+        </dx-chart>
+        <div class="custom">
+          <mat-form-field appearance="fill" class="example-form-field" [formGroup]="formDatePicker1">
+            <mat-label>Enter a date range</mat-label>
+            <mat-date-range-input [rangePicker]="rangePicker">
+              <input matStartDate placeholder="Start date" formControlName="startDate">
+              <input matEndDate placeholder="End date" formControlName="endDate">
+            </mat-date-range-input>
+            <mat-error *ngIf="startDate!.invalid && (startDate!.dirty||startDate!.touched )">
+              <mat-error *ngIf="startDate!.errors?.['required']">
+                Chưa chọn khoảng ngày
+              </mat-error>
+            </mat-error>
+            <mat-datepicker-toggle matSuffix [for]="rangePicker"></mat-datepicker-toggle>
+            <mat-date-range-picker #rangePicker>
+              <mat-date-range-picker-actions>
+                <button mat-button matDateRangePickerCancel>Cancel</button>
+                <button mat-raised-button color="accent" (click)="resetDateRange1()">Reset</button>
+                <button mat-raised-button color="primary" matDateRangePickerApply (click)="submitDateRange1()">Apply</button>
+              </mat-date-range-picker-actions>
+            </mat-date-range-picker>
+          </mat-form-field>
+        </div>
+      </div>
+      
+      <div class="item_wrapper">
+        <dx-chart id="item" [dataSource]="incomeByDate$" title="Revenue Last 7 Days">
+          <dxo-export [enabled]="true"></dxo-export>
+          <dxi-series argumentField="name"></dxi-series>
+          <dxo-argument-axis>
+            <dxo-label wordWrap="none" [overlappingBehavior]="currentMode"></dxo-label>
+          </dxo-argument-axis>
+          <dxo-legend [visible]="false"></dxo-legend>
+          <dxo-label [visible]="true">
+            <dxo-format type="fixedPoint" [precision]="2"></dxo-format>
+          </dxo-label>
+          <!-- <dxi-value-axis>
+            <dxo-title text="VND, millions"></dxo-title>
+          </dxi-value-axis> -->
+          <dxo-tooltip [enabled]="true" fontColor="#F5564A" color="#FFFF">
+            <dxo-format
+                type="fixedPoint"
+                [precision]="0">
+            </dxo-format>
+          </dxo-tooltip>
+        </dx-chart>
+        <div class="options">
+          <div class="caption">Options</div>
+          <div class="option">
+            <span>Overlapping Modes:</span>
+            <dx-select-box [dataSource]="overlappingModes" [(value)]="currentMode">
+            </dx-select-box>
+            <dx-select-box #selectBox (selectedItemChange)="chooseDateRange(selectBox.value)" placeholder="Select time range" [dataSource]="dateChooseMode" displayExpr="value" valueExpr="id"
+            [value]="dateList[0].id">
+            </dx-select-box>
+            <dx-button text="Refresh data" (click)="refresh()"></dx-button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="third_row_content">
+      <div class="item_wrapper">
+        <dx-pie-chart
+          id="pie"
+          title="Invoice By Status"
+          palette="Violet"
+          [dataSource]="invoiceByStatus$"
+        >
+          <dxo-legend
+            horizontalAlignment="center"
+            verticalAlignment="bottom"
+          ></dxo-legend>
+          <dxo-export [enabled]="true"></dxo-export>
+          <dxi-series argumentField="name" valueField="percent">
+            <dxo-label
+              [visible]="true"
+              format="fixedPoint"
+              [customizeText]="customizeLabel"
+            >
+              <dxo-connector [visible]="true" [width]="0.5"></dxo-connector>
+            </dxo-label>
+            <dxo-small-values-grouping
+              mode="smallValueThreshold"
+              [threshold]="4.5"
+            ></dxo-small-values-grouping>
+          </dxi-series>
+        </dx-pie-chart>
+      </div>
+
+      <div class="item_wrapper">
+        <dx-chart id="chart" [dataSource]="categoryByProductNumberOverTheTime$">
+          <dxi-series valueField="categoryID1" name="THỊT, CÁ, HẢI SẢN"></dxi-series>
+          <dxi-series valueField="categoryID2" name="RAU, CỦ, TRÁI CÂY"></dxi-series>
+          <dxi-series valueField="categoryID3" name="BÁNH KẸO CÁC LOẠI"></dxi-series>
+          <dxi-series valueField="categoryID4" name="GẠO, BỘT ĐỒ KHÔ"></dxi-series>
+          <dxi-series valueField="categoryID5" name="ĐỒ UỐNG CÁC LOẠI"></dxi-series>
+          <dxi-series valueField="categoryID6" name="SẢN PHẨM ĐÔNG LẠNH"></dxi-series>
+          <dxi-series valueField="categoryID7" name="SẢN PHẨM HÀNG MÁT"></dxi-series>
+          <dxi-series valueField="categoryID8" name="SỮA UỐNG CÁC LOẠI"></dxi-series>
+          <dxi-series valueField="categoryID9" name="DẦU ĂN GIA VỊ"></dxi-series>
+          <dxi-series valueField="categoryID10" name="CHĂM SÓC CÁ NHÂN"></dxi-series>
+          <dxo-common-series-settings argumentField="date" type="fullStackedBar">
+          </dxo-common-series-settings>
+          <dxo-legend
+            verticalAlignment="top"
+            horizontalAlignment="center"
+            itemTextPosition="right"
+          >
+          </dxo-legend>
+          <dxo-title text="Product Imported By Category Over The Time">
+            <dxo-subtitle text="(Counted By Percentage, Quantity, Last 5 Records)"></dxo-subtitle>
+          </dxo-title>
+          <dxo-export [enabled]="true"></dxo-export>
+          <dxo-tooltip [enabled]="true" [customizeTooltip]="customizeTooltip">
+          </dxo-tooltip>
+        </dx-chart>
+      </div>
+      <div class="item_wrapper">
+        <dx-chart
+          id="chart"
+          [dataSource]="categoryByExpenseOverTheTime$"
+        >
+        <dxo-title text="Imported Product Expenses">
+          <dxo-subtitle text="(Counted By Percentage, Quantity, Last 5 Records)"></dxo-subtitle>
+        </dxo-title>
+        <dxi-series valueField="categoryID1" name="THỊT, CÁ, HẢI SẢN" stack="Main"></dxi-series>
+        <dxi-series valueField="categoryID2" name="RAU, CỦ, TRÁI CÂY" stack="Main"></dxi-series>
+        <dxi-series valueField="categoryID3" name="BÁNH KẸO CÁC LOẠI" stack="Sub"></dxi-series>
+        <dxi-series valueField="categoryID4" name="GẠO, BỘT ĐỒ KHÔ" stack="Main"></dxi-series>
+        <dxi-series valueField="categoryID5" name="ĐỒ UỐNG CÁC LOẠI" stack="Sub"></dxi-series>
+        <dxi-series valueField="categoryID6" name="SẢN PHẨM ĐÔNG LẠNH" stack="Main"></dxi-series>
+        <dxi-series valueField="categoryID7" name="SẢN PHẨM HÀNG MÁT" stack="Other"></dxi-series>
+        <dxi-series valueField="categoryID8" name="SỮA UỐNG CÁC LOẠI" stack="Sub"></dxi-series>
+        <dxi-series valueField="categoryID9" name="DẦU ĂN GIA VỊ" stack="Sub"></dxi-series>
+        <dxi-series valueField="categoryID10" name="CHĂM SÓC CÁ NHÂN" stack="Other"></dxi-series>
+        <!-- <dxi-series valueField="categoryID1" name="THỊT, CÁ, HẢI SẢN"></dxi-series>
+        <dxi-series valueField="categoryID2" name="RAU, CỦ, TRÁI CÂY"></dxi-series>
+        <dxi-series valueField="categoryID3" name="BÁNH KẸO CÁC LOẠI"></dxi-series>
+        <dxi-series valueField="categoryID4" name="GẠO, BỘT ĐỒ KHÔ"></dxi-series>
+        <dxi-series valueField="categoryID5" name="ĐỒ UỐNG CÁC LOẠI"></dxi-series>
+        <dxi-series valueField="categoryID6" name="SẢN PHẨM ĐÔNG LẠNH"></dxi-series>
+        <dxi-series valueField="categoryID7" name="SẢN PHẨM HÀNG MÁT"></dxi-series>
+        <dxi-series valueField="categoryID8" name="SỮA UỐNG CÁC LOẠI"></dxi-series>
+        <dxi-series valueField="categoryID9" name="DẦU ĂN GIA VỊ"></dxi-series>
+        <dxi-series valueField="categoryID10" name="CHĂM SÓC CÁ NHÂN"></dxi-series> -->
+          <!-- <dxi-value-axis>
+            <dxo-title text="VND, millions"></dxo-title>
+          </dxi-value-axis> -->
+          <dxo-common-series-settings argumentField="date" type="fullStackedBar">
+          </dxo-common-series-settings>
+          <dxo-legend
+            verticalAlignment="top"
+            horizontalAlignment="center"
+            itemTextPosition="right"
+            [columnCount]="3"
+            [customizeItems]="customizeItems"
+          >
+            <dxo-border [visible]="false"></dxo-border>
+          </dxo-legend>
+          
+          <dxi-value-axis [placeholderSize]="40" [visible]="true">
+            <!-- <dxo-label format="millions"></dxo-label> -->
+        </dxi-value-axis>
+          <dxo-export [enabled]="true"></dxo-export>
+          <dxo-tooltip [enabled]="true" fontColor="#F5564A" color="#FFFF">
+            <dxo-format
+                type="fixedPoint"
+                [precision]="0">
+            </dxo-format>
+          </dxo-tooltip>
+        </dx-chart>
+      </div>
+
+    </div>
+
+    <div class="fourth_row_content">
+      <div class="item_wrapper">
+        <dx-chart id="item" [rotated]="true" class="dx-viewport" [dataSource]="topSold$" 
+        [palette]="palette"
+        [paletteExtensionMode]="paletteExtensionMode"
+        >
+          <dxo-title
+            text="Top 5 Products Sold"
+            subtitle=""
+          >
+          </dxo-title>
+          <dxo-argument-axis [inverted]="true"></dxo-argument-axis>
+          <dxi-series *ngFor="let p of topSold$"  valueField="value" name="{{p.name}}"></dxi-series>
+          <dxo-common-series-settings
+            argumentField="name"
+            type="bar"
+            valueField="value"
+            [ignoreEmptyPoints]="true"
+            hoverMode="allArgumentPoints"
+            selectionMode="allArgumentPoints"
+            [showInLegend]="false"
+          >
+          <dxo-label
+          position="inside"
+            [visible]="true"
+            [format]="{
+              type: 'fixedPoint',
+              precision: 0
+            }"
+          >
+          </dxo-label>
+          
+          </dxo-common-series-settings>
+          
+          <dxo-export [enabled]="true"></dxo-export>
+          <dxo-series-template nameField="name"></dxo-series-template>
+  
+        </dx-chart>
+        <div class="custom">
+          <mat-form-field appearance="fill" class="example-form-field" [formGroup]="formDatePicker2">
+            <mat-label>Enter a date range</mat-label>
+            <mat-date-range-input [rangePicker]="rangePicker2">
+              <input matStartDate placeholder="Start date" formControlName="startDate">
+              <input matEndDate placeholder="End date" formControlName="endDate">
+            </mat-date-range-input>
+            <mat-error *ngIf="startDate2!.invalid && (startDate2!.dirty||startDate2!.touched )">
+              <mat-error *ngIf="startDate2!.errors?.['required']">
+                Chưa chọn khoảng ngày
+              </mat-error>
+            </mat-error>
+            <mat-datepicker-toggle matSuffix [for]="rangePicker2"></mat-datepicker-toggle>
+            <mat-date-range-picker #rangePicker2>
+              <mat-date-range-picker-actions>
+                <button mat-button matDateRangePickerCancel>Cancel</button>
+                <button mat-raised-button color="accent" (click)="resetDateRange2()">Reset</button>
+                <button mat-raised-button color="primary" matDateRangePickerApply (click)="submitDateRange2()">Apply</button>
+              </mat-date-range-picker-actions>
+            </mat-date-range-picker>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="item_wrapper">
+        <dx-chart id="chart"
+          [palette]="palette"
+          [dataSource]="expenseAndRevenue$"
+          title="Revenue and Expense Last 7 Days"
+          [paletteExtensionMode]="paletteExtensionMode"
+        >
+          <dxi-series valueField="revenue" name="Revenue"></dxi-series>
+          <dxi-series valueField="expense" name="Expense"></dxi-series>
+          <dxo-common-series-settings
+            #seriesSettings
+            argumentField="date"
+            [type]="types[0]"
+          >
+          </dxo-common-series-settings>
+          <dxo-margin [bottom]="20"></dxo-margin>
+          <dxo-common-axis-settings>
+            <dxo-grid [visible]="true"></dxo-grid>
+          </dxo-common-axis-settings>
+          <dxo-legend verticalAlignment="top" horizontalAlignment="right">
+          </dxo-legend>
+          <dxo-argument-axis [allowDecimals]="false" [axisDivisionFactor]="60">
+            <dxo-label>
+              <dxo-format type="decimal"></dxo-format>
+            </dxo-label>
+          </dxo-argument-axis>
+          <dxo-export [enabled]="true"></dxo-export>
+          <dxo-tooltip [enabled]="true" fontColor="#F5564A" color="#FFFF">
+            <dxo-format
+                type="fixedPoint"
+                [precision]="0">
+            </dxo-format>
+          </dxo-tooltip>
+        </dx-chart>
+        <div class="options">
+          <div class="caption">Options</div>
+          <div class="option">
+            <span>Series Type</span>
+            <dx-select-box [dataSource]="types" [(value)]="seriesSettings.type">
+            </dx-select-box>
+            <dx-select-box #selectBox2 (selectedItemChange)="chooseDateRange2(selectBox2.value)" placeholder="Select time range" [dataSource]="dateChooseMode" displayExpr="value" valueExpr="id"
+            [value]="dateList[0].id">
+            </dx-select-box>
+            <dx-select-box [items]="paletteCollection" [(value)]="palette">
+            </dx-select-box>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="fifth_row_content">
+      <div class="item_wrapper">
+        <dx-funnel
+          id="pyramid"
+          palette="Harmony light"
+          [dataSource]="companyPositionLevel$"
+          argumentField="level"
+          valueField="count"
+          [inverted]="true"
+          algorithm="dynamicHeight"
+          [sortData]="false"
+        >
+          <dxo-title text="Company Position">
+            <dxo-margin [bottom]="30"></dxo-margin>
+          </dxo-title>
+          <dxo-tooltip [enabled]="true"></dxo-tooltip>
+          <dxo-item>
+            <dxo-border [visible]="true"></dxo-border>
+          </dxo-item>
+          <dxo-legend [visible]="true"></dxo-legend>
+          <dxo-label [visible]="true" horizontalAlignment="left" backgroundColor="none">
+            <dxo-font [size]="16"></dxo-font>
+          </dxo-label>
+          <dxo-export [enabled]="true"></dxo-export>
+          <dxo-argument-axis [inverted]="true"></dxo-argument-axis>
+        </dx-funnel>
+      </div>
+
+      <div class="item_wrapper">
+        <dx-chart
+          id="chart"
+          palette="vintage"
+          [dataSource]="productRating$"
+          title="Top 10 Favorite Products"
+        >
+          <dxi-series valueField="fiveStar" name="5 star"></dxi-series>
+          <dxi-series valueField="fourStar" name="4 star"></dxi-series>
+          <dxi-series valueField="threeStar" name="3 star"></dxi-series>
+          <dxi-series valueField="twoStar" name="2 star"></dxi-series>
+          <dxi-series valueField="oneStar" name="1 star"></dxi-series>
+          <!-- <dxi-series [visible]="false" valueField="average" name="Average" ></dxi-series> -->
+          <dxi-series
+            axis="total"
+            type="spline"
+            valueField="average"
+            name="Average"
+            color="#638754"
+          >
+          </dxi-series>
+          <dxi-series
+            type="fullstackedspline"
+            valueField="total"
+            name="Total star count"
+            color="#008fd8"
+          >
+          </dxi-series>
+          
+          <dxo-common-series-settings argumentField="name" type="fullstackedbar">
+            
+          </dxo-common-series-settings>
+          <dxi-value-axis>
+            <dxo-grid [visible]="true"></dxo-grid>
+          </dxi-value-axis>
+          <dxi-value-axis name="total" position="right">
+            <dxo-grid [visible]="true"></dxo-grid>
+            <dxo-title text="Number of star by average, count"></dxo-title>
+          </dxi-value-axis>
+          <dxo-legend verticalAlignment="bottom" horizontalAlignment="center">
+          </dxo-legend>
+          <dxo-export [enabled]="true"></dxo-export>
+          <dxo-tooltip
+            [enabled]="true"
+            [shared]="true"
+            [customizeTooltip]="customizeTooltip2"
+          >
+            <dxo-format type="largeNumber" [precision]="2"></dxo-format>
+            
+          </dxo-tooltip>
+          <dxo-argument-axis>
+            <dxo-label wordWrap="normal" overlappingBehavior="none"></dxo-label>
+          </dxo-argument-axis>
+        </dx-chart>
+      </div>
+    </div>
+</div>
+

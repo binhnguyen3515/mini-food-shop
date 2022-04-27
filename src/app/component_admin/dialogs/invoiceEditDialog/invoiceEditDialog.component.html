@@ -1,0 +1,77 @@
+<mat-dialog-content class="mat-typography" style="height:100%;max-height: 800px;overflow: unset;">
+  <div class="import_wrapper">
+    <div class="title_wrapper">
+      <h1 style="color:var(--mainFormColor);">Invoice(Edit)</h1>
+      <div class="total_money_wrapper" *ngIf="totalPayment">
+        <h2 class="number">Total: {{totalPayment.totalMoney|number: '1.0-2'}}</h2>
+        <h2 class="number">Net: {{totalPayment.totalMoneyNet|number: '1.0-2'}}</h2>
+      </div>
+    </div>
+    
+    <app-adminInvoiceInnerTable *ngIf="sendData" #send [userId]="sendUserID" [data]="sendData" (rowData)="getRowData($event)" (memberShipType)="getMemberShipType($event)"
+    [refresh]="refreshTable" [invoiceID]="sendInvoiceID"
+    ></app-adminInvoiceInnerTable>
+    <div class="formEditInvoice" [formGroup]="formEditInvoiceItem" *ngIf="!hideContent">
+      <mat-form-field appearance="outline" class="mat-form-field-readonly">
+        <mat-label>Id</mat-label>
+        <input matInput placeholder="Ex. ID.." formControlName="id" readonly>
+        <mat-icon matSuffix>drag_indicator</mat-icon>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="mat-form-field-readonly">
+        <mat-label>Name</mat-label>
+        <input matInput placeholder="Ex. Name.." formControlName="name" readonly>
+        <mat-icon matSuffix>drag_indicator</mat-icon>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="mat-form-field-readonly">
+        <mat-label>Price</mat-label>
+        <input matInput placeholder="Ex. price.." formControlName="price" type="number" readonly>
+        <mat-icon matSuffix>drag_indicator</mat-icon>
+        <mat-error *ngIf="price!.invalid && (price!.dirty||price!.touched )">
+          <mat-error *ngIf="price!.errors?.['required']">
+            Chưa nhập giá sản phẩm
+          </mat-error>
+          <mat-error *ngIf="price!.errors?.['min']">
+            Giá tối thiểu là 0 VND
+          </mat-error>
+          <mat-error *ngIf="price!.errors?.['max']">
+            Giá tối đa là 1 tỷ
+          </mat-error>
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Quantity</mat-label>
+        <input matInput placeholder="Ex. quantity.." formControlName="quantity" type="number">
+        <mat-icon matSuffix>drag_indicator</mat-icon>
+        <mat-error *ngIf="quantity!.invalid && (quantity!.dirty||quantity!.touched )">
+          <mat-error *ngIf="quantity!.errors?.['required']">
+            Chưa nhập số lượng
+          </mat-error>
+          <mat-error *ngIf="quantity!.errors?.['pattern']">
+            Số lượng phải là số nguyên
+          </mat-error>
+          <mat-error *ngIf="quantity!.errors?.['min'] && !quantity!.errors?.['pattern']">
+            Số lượng tối thiểu là 1
+          </mat-error>
+          <mat-error *ngIf="quantity!.errors?.['max'] && !quantity!.errors?.['pattern']">
+            Số lượng tối đa là 10
+          </mat-error>
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="mat-form-field-readonly">
+        <mat-label>Discount</mat-label>
+        <input matInput placeholder="Ex. discount.." formControlName="discount" readonly>
+        <mat-icon matSuffix>drag_indicator</mat-icon>
+      </mat-form-field>
+
+    </div>
+    <mat-dialog-actions align="end">
+      <button mat-raised-button color="warn" mat-dialog-close >Cancel</button>
+      <button mat-raised-button color="accent" *ngIf="!hideContent" (click)="formEditInvoiceItem.reset();hideContent=true">Reset</button>
+      <button mat-raised-button color="primary" *ngIf="!hideContent" (click)="submitInvoice()" cdkFocusInitial >Save</button>
+    </mat-dialog-actions>
+  </div>
+</mat-dialog-content>

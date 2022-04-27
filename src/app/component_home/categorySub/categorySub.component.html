@@ -1,0 +1,24 @@
+<div class="products__cart" style="margin-top:24px">
+    <div class="row sm-gutter">
+        <div class="col l-12">
+            <div class="products__sale-off--content c-12">
+                <div class="products__sale-off--title" style="align-items: center;display: flex;">
+                    <h2 class="pt-0">SẢN PHẨM THEO DANH MỤC : "
+                        <ng-container *ngIf="listProductBySubCategory$">
+                            <span *ngIf="listProductBySubCategory$ as i">
+                                {{i[0].categorySub.name}}
+                            </span>
+                        </ng-container>
+                        "
+                    </h2>
+                </div>
+            </div>
+            <app-sharedProductDisplay *ngIf="listProductBySubCategory$;else noItem" #productByCategory [productData$]="listProductBySubCategory$"></app-sharedProductDisplay>
+        <ng-template #noItem>
+            <div class="noItemFound_element mb-3">
+                <h2>Không có sản phẩm trong danh mục này</h2>
+            </div>
+        </ng-template>
+      </div>
+    </div>   
+  </div>

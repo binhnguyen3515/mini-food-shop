@@ -1,0 +1,371 @@
+<div class="px-2">
+    <div class="" style="margin-top:45px;">
+        <div class="product__details-paging">
+            <span class="product__details-paging-content">
+                <a [routerLink]="['/']">Trang chủ</a> > 
+                <a [routerLink]="['/home',detailProductById$?.categorySub?.id]">{{detailProductById$?.categorySub?.name}}</a> > 
+                <a>{{detailProductById$?.name}}</a></span>
+        </div>
+      </div>
+      <!-- Phần thông tin sản phẩm start -->
+      <div class="product__details">
+      <!-- ảnh sản phẩm -->
+      <div class="col l-7 c-12">
+          <div class="slide__product">
+              <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+                  <div class="carousel-inner" style="margin-bottom: 20px;margin-top: 5px;">
+                    <div class="carousel-item" *ngFor="let p of detailProductById$?.pictureDetails;let i = index" [ngClass]="i==0?'active':''">
+                      <img [src]="baseHostImageUrl+p" class="d-block w-100" alt="...">
+                    </div>
+                  </div>
+                  <button class="carousel-control-prev btn-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                  </button>
+                  <button class="carousel-control-next btn-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                  </button>
+                  <div class="carousel-indicators slide__productimg--item ">
+                    <img *ngFor="let p of detailProductById$?.pictureDetails;let i = index" [src]="baseHostImageUrl+p" type="button"
+                      data-bs-target="#carouselExampleIndicators" attr.data-bs-slide-to="{{i}}"
+                      [ngClass]="i == 0?'active':''" class="img__slide" aria-current="true"
+                      attr.aria-label="Slide {{i+1}}">
+
+                  </div>
+      
+              </div>
+          </div>
+      </div>
+      
+      <!-- nội dung chi tiết sản phẩm start -->
+      <div class="col l-5 c-12">
+          <div class="product__details-content ">
+              <div class="product__details-content--title">
+                <h3>{{detailProductById$?.name}}</h3>
+            </div>
+          <span class="product__details-conten-expiry">
+              <!-- HSD còn {{(detailProductById$?.productDetailsDTO?.dateEnd|date:'dd-MM-yyyy')}} tháng -->
+              {{utility.calculateExpiredDate(detailProductById$?.productDetailsDTO?.dateEnd!)}}
+        </span>
+          <div class="product__details-content--price">
+              <span class="product__details-price-current" *ngIf="detailProductById$?.discountDTO;else other">
+                {{detailProductById$.productDetailsDTO.priceSell*(1-detailProductById$.discountDTO.percentage)|number}}đ
+               </span>
+               <ng-template #other>
+                <span class="product__details-price-current">{{detailProductById$?.productDetailsDTO?.priceSell | number}}đ</span>
+               </ng-template>
+              <span class="product__details-price-old" *ngIf="detailProductById$?.discountDTO">
+                {{detailProductById$?.productDetailsDTO?.priceSell | number}}đ
+              </span>
+              <span class="product__details-discount" *ngIf="detailProductById$?.discountDTO">{{detailProductById$.discountDTO.percentage*100}}%</span>
+          </div>
+      
+          <button class="l-12 product__details-btn btn btn--green" 
+          (click)="addToCart(detailProductById$)"
+          [ngClass]="{'disabled':!detailProductById$?.productDetailsDTO?.available}">CHỌN MUA</button> 
+          <div class="product__details-type--note">
+              <i>(khuyến mãi chỉ áp dụng với mua hàng online)</i>
+          </div>
+      </div>
+      <div class="product__details-footer">
+      <div class="">
+          <div class="footer__header-order">
+              <i class="bhx-sship"></i>
+              <div class="footer__header-order--description">
+                  <span>Đặt hàng online<b> giao tận nhà ĐÚNG GIỜ</b>
+                  (nếu trễ tặng PMH 20.000đ)</span>
+              </div>
+          </div>
+          <div class="footer__header-change">
+              <i class="bhx1-swap"></i>
+              <div class="footer__header-order--description2">
+                  <span>Đổi, trả sản phẩm<b>trong 7 ngày</b></span>
+              </div>
+          </div>
+      </div> 
+      </div>
+      
+          
+      </div>
+      <!-- nội dung chi tiết sản phẩm end -->
+      </div>
+      <!-- Phần thông tin sản phẩm start -->
+      
+      <!-- Sản phẩm liên quan start-->
+      <div class="products__cart" style="margin-top:24px"*ngIf="listRelevantProduct$;else noItem">
+        <div class="row sm-gutter">
+            <div class="col l-12">
+                <div class="products__sale-off--content-drink">
+                    <div class="products__sale-off--title">
+                        <h2 style="color: #4A4A6F;margin-top: -5px;">SẢN PHẨM LIÊN QUAN</h2>
+                    </div>
+                </div>
+      
+                <app-sharedProductDisplay  #relevantProduct [productData$]="listRelevantProduct$"></app-sharedProductDisplay>
+            
+          </div>
+        </div>   
+      </div>
+      <ng-template #noItem>
+        <!-- <div class="noItemFound_element mb-3">
+            <h2>Không tìm thấy sản phẩm</h2>
+        </div> -->
+    </ng-template>
+      <!-- Sản phẩm liên quan end-->
+      
+      <!-- Thông tin sản phẩm star -->
+      <div class="product__information">                       
+      <div class="col l-7 c-12" style="min-width: 300px;">
+          <div class="product__information-header">
+              <H3>Thông tin sản phẩm</H3>
+              <span>
+                {{detailProductById$?.description}}
+              </span>
+          </div>
+          
+          <div class="product__information-description">
+              <div class="product__information-description--content" *ngIf="detailProductById$?.brand || detailProductById$?.brand != ''">
+                  <span class="">Thương hiệu</span>
+                  <span class="">{{detailProductById$?.brand}}</span>
+              </div>
+              <div class="product__information-description--content" *ngIf="detailProductById$?.origin || detailProductById$?.origin != ''">
+                  <span class="">Sản xuất tại</span>
+                  <span class="">{{detailProductById$?.origin}}</span>
+              </div>
+              <div class="product__information-description--content">
+                  <span class="">Loại sản phẩm</span>
+                  <span class="">{{detailProductById$?.categorySub?.name}}</span>
+              </div>
+              <div class="product__information-description--content" *ngIf="detailProductById$?.productInfoDTO?.component || detailProductById$?.productInfoDTO?.component != ''">
+                  <span class="">Thành phần</span>
+                  <span class="">{{detailProductById$?.productInfoDTO?.component}}</span>
+              </div>
+              <div class="product__information-description--content" *ngIf="detailProductById$?.productInfoDTO?.guide || detailProductById$?.productInfoDTO?.guide != ''">
+                  <span class="">Cách dùng</span>
+                  <span class="">{{detailProductById$?.productInfoDTO?.guide}}</span>
+              </div>
+              <div class="product__information-description--content" *ngIf="detailProductById$?.productInfoDTO?.weight || detailProductById$?.productInfoDTO?.weight != ''">
+                  <span class="">Khối lượng</span>
+                  <span class="">{{detailProductById$?.productInfoDTO?.weight}}</span>
+              </div>
+              <div class="product__information-description--content" *ngIf="detailProductById$?.productInfoDTO?.capacity || detailProductById$?.productInfoDTO?.capacity != ''">
+                  <span class="">Dung tích</span>
+                  <span class="">{{detailProductById$?.productInfoDTO?.capacity}}</span>
+              </div>
+              <div class="product__information-description--content" *ngIf="detailProductById$?.productInfoDTO?.usage || detailProductById$?.productInfoDTO?.usage != ''">
+                  <span class="">Bảo quản</span>
+                  <span class="">{{detailProductById$?.productInfoDTO?.usage}}</span>
+              </div>
+              <div class="product__information-description--content" *ngIf="detailProductById$?.productInfoDTO?.note || detailProductById$?.productInfoDTO?.note != ''">
+                  <span class="">Lưu ý</span>
+                  <span class=""> {{detailProductById$?.productInfoDTO?.note}}</span>
+              </div>
+              <div class="product__information-description--content" *ngIf="detailProductById$?.productInfoDTO?.others || detailProductById$?.productInfoDTO?.others != ''">
+                  <span class="">Khác</span>
+                  <span class=""> {{detailProductById$?.productInfoDTO?.others}}</span>
+              </div>
+          </div>
+      </div>
+      
+      <div class="col l-5 c-12">
+          <div class="product__information-buy__often">
+              <div class="div buy__often-title">
+                  <h3>Nhóm hàng thường mua</h3>
+              </div>
+              <div class="product__information-buy__often-container" >
+                  <div class="product__information-buy__often-content" *ngFor="let p of popularProduct$ | async" [routerLink]="['/home/detail',p.id]">
+                      <img [src]="baseHostImageUrl+p.picture" alt="" class="buy__often-img">
+                      <a class="buy__often-description">{{p.name}}</a>
+                  </div>
+                  <!-- <div class="product__information-buy__often-content">
+                      <img src="assets/img/product/suatuoi.png" alt="" class="buy__often-img">
+                      <a class="buy__often-description">Sữa tươi các loại</a>
+                  </div>
+                  <div class="product__information-buy__often-content">
+                      <img src="assets/img/product/nuocngot.png" alt="" class="buy__often-img">
+                      <a class="buy__often-description">Nước ngọt các loại</a>
+                  </div>
+                  <div class="product__information-buy__often-content">
+                      <img src="assets/img/product/mygoi.png" alt="" class="buy__often-img">
+                      <a class="buy__often-description">Mì gói</a>
+                  </div>
+                  <div class="product__information-buy__often-content">
+                      <img src="assets/img/product/dâun.png" alt="" class="buy__often-img">
+                      <a class="buy__often-description">Dầu ăn</a>
+                  </div>
+                  <div class="product__information-buy__often-content">
+                      <img src="assets/img/product/khanuoc.png" alt="" class="buy__often-img">
+                      <a class="buy__often-description">khăn ước các loại</a>
+                  </div>
+                  <div class="product__information-buy__often-content">
+                      <img src="assets/img/product/daugoi.png" alt="" class="buy__often-img">
+                      <a class="buy__often-description">Dầu gội các loại</a>
+                  </div>
+                  <div class="product__information-buy__often-content">
+                      <img src="assets/img/product/gao.png" alt="" class="buy__often-img">
+                      <a class="buy__often-description">gạo ngon các loại</a>
+                  </div>
+                  <div class="product__information-buy__often-content">
+                      <img src="assets/img/product/thitcacloai.png" alt="" class="buy__often-img">
+                      <a class="buy__often-description">Trái cây tươi ngon</a>
+                  </div> -->
+              </div>
+          </div>
+      </div>
+      
+      </div>
+      
+      <!-- Thông tin sản phẩm end -->
+
+      <!-- Đánh giá sản phẩm-->
+      <div class="product_rating">
+          <h2 class="fw-bold">Đánh giá sản phẩm</h2>
+          <div class="product_rating_content">
+              <div class="product_rating_content_left">
+                  <!--Rating summary-->
+                <div class="rating_summary">
+                    <div class="big_star text-center">
+                        <h3 class="mb-0">{{_averageRate | number : '1.0-2'}}</h3>
+                        <i class="fas fa-star text-warning" style="font-size:70px"></i>
+                        <h5>{{_totalRateCount}} đánh giá</h5>
+                    </div>
+                    <div class="number_of_star">
+                        <div class="star_wrapper">
+                            <p class="fs-3">5★</p>
+                            <p><ngb-progressbar type="warning" height="0.7rem" [value]="_5StarPercentage"></ngb-progressbar></p>
+                            <p class="rating_product">{{_5Star}} đánh giá</p>
+                        </div>
+                        <div class="star_wrapper">
+                            <p class="fs-3">4★</p>
+                            <p><ngb-progressbar type="warning" height="0.7rem" [value]="_4StarPercentage"></ngb-progressbar></p>
+                            <p class="rating_product">{{_4Star}} đánh giá</p>
+                        </div>
+                        <div class="star_wrapper">
+                            <p class="fs-3">3★</p>
+                            <p><ngb-progressbar type="warning" height="0.7rem" [value]="_3StarPercentage"></ngb-progressbar></p>
+                            <p class="rating_product">{{_3Star}} đánh giá</p>
+                        </div>
+                        <div class="star_wrapper">
+                            <p class="fs-3">2★</p>
+                            <p><ngb-progressbar type="warning" height="0.7rem" [value]="_2StarPercentage"></ngb-progressbar></p>
+                            <p class="rating_product">{{_2Star}} đánh giá</p>
+                        </div>
+                        <div class="star_wrapper">
+                            <p class="fs-3">1★</p>
+                            <p><ngb-progressbar type="warning" height="0.7rem" [value]="_1StarPercentage"></ngb-progressbar></p>
+                            <p class="rating_product">{{_1Star}} đánh giá</p>
+                        </div>
+                       
+                    </div>
+                    <div class="select_your_star">
+                        <p class="title mb-0 text-success">Gửi đánh giá của bạn</p>
+                        <p class="">
+                            <ngb-rating [(rate)]="yourRate" [max]="5">
+                                <ng-template let-fill="fill" let-index="index">
+                                    <span class="star" [class.filled]="fill === 100" (click)="selectStar(index+1)">&#9733;</span>
+                                  </ng-template>
+                            </ngb-rating>
+                        </p>
+                    </div>
+                </div>
+                <!--Rating summary edge-->
+
+                <!--Comment list edge-->
+                <div class="comment_list" [formGroup]="accessForm">
+                    <label class="title_placeholder">Mời bạn đánh giá về sản phẩm...</label>
+                    <textarea class="form-control my-2" formControlName="comment" cols="30" rows="4"></textarea>
+                    <div class="gender my-4" [ngClass]="{'anonymous_info':isLoginStatus}">
+                        <div class="gender_male">
+                            <input formControlName="gender" name="gender" [value]="true" type="radio">
+                            <label for="">Anh</label>
+                        </div>
+                        <div class="gender_female">
+                            <input formControlName="gender" name="gender" [value]="false" type="radio">
+                            <label for="">Chị</label>
+                        </div>
+                    </div>
+
+                    <div class="name mt-2" [ngClass]="{'anonymous_info':isLoginStatus}">
+                        <input formControlName="name" type="text" class="form-control">
+                        <label>Họ tên </label>
+                    </div>
+                    <div *ngIf="name!.invalid && (name!.dirty||name!.touched )" class="text-danger fw-bold fs-4">
+                        <div *ngIf="name!.errors?.['required']">
+                          Mời nhập tên
+                        </div>
+                        <div *ngIf="name!.errors?.['minlength']">
+                          Họ tên tối thiểu 2 ký tự
+                        </div>
+                        <div *ngIf="name!.errors?.['maxlength']">
+                          Họ tên tối đa 30 ký tự
+                        </div>
+                      </div>
+                    <div class="name mt-4" [ngClass]="{'anonymous_info':isLoginStatus}">
+                        <input formControlName="phone" type="text" class="form-control">
+                        <label>Số điện thoại </label>
+                    </div>
+                    <div *ngIf="phone!.invalid && (phone!.dirty||phone!.touched )" class="text-danger fw-bold fs-4">
+                        <div *ngIf="phone!.errors?.['required']">
+                          Mời nhập SĐT
+                        </div>
+                        <div *ngIf="phone!.errors?.['invalidPhone'] && !phone!.errors?.['required']">
+                          SĐT không hợp lệ
+                        </div>
+                        <div *ngIf="phone!.errors?.['existedPhone'] && !phone!.errors?.['required']">
+                          SĐT đã tồn tại
+                        </div>
+                      </div>
+                    <div class="name mt-4" [ngClass]="{'anonymous_info':isLoginStatus}">
+                        <input formControlName="email" type="text" class="form-control">
+                        <label>Email </label>
+                    </div>
+                    <div *ngIf="email!.invalid && (email!.dirty||email!.touched )" class="text-danger fw-bold fs-4">
+                        <div *ngIf="email!.errors?.['required']">
+                            Mời nhập email
+                        </div>
+                        <div *ngIf="email!.errors?.['email'] && !email!.errors?.['required']">
+                          Email sai định dạng
+                        </div>
+                        <div *ngIf="email!.errors?.['existedEmail'] && !email!.errors?.['required']">
+                          Email đã tồn tại
+                        </div>
+                      </div>
+                    <button class="btn form-control text-white mt-4" style="padding:25px 0;background:#008848"(click)="submitAccess()">GỬI ĐÁNH GIÁ</button>
+                </div>
+                <!--Comment list-->
+
+                <!--Rating by user with info-->
+                <div class="rating_by_user my-4" *ngIf="detailProductById$?.ratingDTO;else noRate">
+                    <div class="rating_by_user_item" *ngFor="let r of ratingByUsers$ | paginate:{id:'ratingSection',itemsPerPage:4,currentPage:page_rating,
+                        totalItems:ratingByUsers$.length}">
+                        <div class="rating_by_user_name">
+                            <h4>{{r.user.name}}</h4>
+                            <p class="">
+                                <ngb-rating [rate]="r.star" [max]="5" [readonly]=true>
+                                    <ng-template let-fill="fill" let-index="index">
+                                        <span class="star" [class.filled]="fill === 100">&#9733;</span>
+                                      </ng-template>
+                                </ngb-rating>
+                            </p>
+                            <h5 class="text-primary" style="opacity: 0.7;">{{r.date | date:'dd-MM-yyyy'}}</h5>
+                        </div>
+                        <p class="fs-3">{{r.comment}}</p>
+                    </div>
+                </div>
+                <div class="paginationCustom" *ngIf="ratingByUsers$">
+                    <pagination-controls id="ratingSection" (pageChange)="page_rating = $event"></pagination-controls>
+                </div>
+                <ng-template #noRate>
+                    <!-- <p>Sản phẩm chưa có đánh giá</p> -->
+                </ng-template>
+                <!--Rating by user with info edge-->
+
+              </div>
+              <div class="product_rating_content_right">
+                  
+            </div>
+          </div>
+      </div>
+      <!-- Đánh giá sản phẩm edge-->
+    </div>

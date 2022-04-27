@@ -1,0 +1,119 @@
+
+<div class="table_parent_wrapper">
+  <div class="table_wrapper">
+    <div class="manage_field">
+      <mat-form-field class="search-form-field" appearance="fill">
+        <mat-label class="form-field-label">Search</mat-label>
+        <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Khoai tây..." #input>
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+      <button *ngIf="entity!=='Invoice' && entity!=='Account Log'&& entity!=='Working Log'&& entity!=='Recover Product'&& entity!=='Recover Account' && entity!=='Top Customer'" (click)="addAndGetId('null','add',entity)" mat-fab color="primary" aria-label="Example icon button with a home icon">
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+    <div class="table_content_wrapper">
+      <div class="mat-elevation-z8">
+        <table mat-table [dataSource]="list" matSort>
+        
+          <!-- Column -->
+          <ng-container *ngFor="let key of cols|slice:0:(cols?.length)!-1;" matColumnDef="{{key}}">
+
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> 
+              {{key|titlecase}} 
+            </th>
+            
+            <td mat-cell *matCellDef="let element">
+              <ng-container *ngIf="element[key]">
+
+                <ng-container *ngIf="isNumber(element[key]);else elseBlock1">
+                  <span>{{element[key]|number:'1.0-2'}}</span>
+                </ng-container>
+  
+                <ng-template #elseBlock1>
+                  <ng-container *ngIf="key!=='avatar' && key==='picture';else elseBlock2">
+                    <img [src]="baseHostImageUrl+element[key]" height="30px">
+                  </ng-container>
+                </ng-template>
+
+                <ng-template #elseBlock2>
+                  <ng-container *ngIf="isDate(element[key]) && key !=='description';else elseBlock3">
+                    <span>{{element[key]|date:'dd-MM-yyyy'}}</span>
+                  </ng-container>
+                </ng-template>
+
+                <ng-template #elseBlock3>
+                  <ng-container *ngIf="key=='avatar';else elseBlock4">
+                    <img [src]="baseHostImageUrl+element[key]" height="30px" class="customCircle">
+                  </ng-container>
+                </ng-template>
+
+                <ng-template #elseBlock4>
+                  <ng-container *ngIf="key=='status'&& entity=='Invoice';else elseBlock5">
+                    <span [ngClass]="{'danger':element[key]=='Pending','success':element[key]=='Paid','sky':element[key]=='Shipping','warning':element[key]=='Cancel','secondary':element[key]=='Refund'}">{{element[key]}}</span>
+                  </ng-container>
+                </ng-template>
+
+                <ng-template #elseBlock5>
+                  <ng-container *ngIf="key=='memberShip'&& entity=='Account';else elseBlock6">
+                    <span [ngClass]="{'secondary':element[key]=='Platinum','warning':element[key]=='Gold','danger':element[key]=='Silver'}">{{element[key]}}</span>
+                  </ng-container>
+                </ng-template>
+
+                <ng-template #elseBlock6>
+                  <span >{{element[key]}}</span>
+                </ng-template>
+
+              </ng-container>
+            </td>
+            
+          </ng-container>
+          
+          <!-- Action Column-->
+          <ng-container matColumnDef="action" >
+            <th mat-header-cell *matHeaderCellDef> </th>
+            <td mat-cell *matCellDef="let row" class="text-end">  
+              <button (click)="addAndGetId(row[cols[0]],'print',entity)" mat-icon-button color="warn" *ngIf="entity==='Invoice' && row[cols[5]]==='Paid'"><mat-icon>print</mat-icon></button>
+              <button [disabled]="entity==='Account Log' || entity==='Working Log' || entity ==='Recover Account'|| entity ==='Recover Product' || entity==='Top Customer'" (click)="addAndGetId(row[cols[0]],'edit',entity)" mat-icon-button><mat-icon>launch</mat-icon></button>
+              <button *ngIf="entity!=='Recover Account' && entity!=='Recover Product'" [disabled]="entity==='Import' || entity==='Account Log' || entity==='Working Log' || entity==='Invoice' || entity==='Top Customer' || !auth.isAdminOrManager() ||
+              (entity==='Account' && auth.isManager() && !auth.isAdmin() && tokenStorage.getUser().id!=row[cols[0]] && row[cols[7]].indexOf('MANAGER')>-1)||
+               (entity==='Account' && auth.isAdmin() && tokenStorage.getUser().id!=row[cols[0]] && row[cols[7]].indexOf('ADMIN')>-1)
+              " (click)="addAndGetId(row[cols[0]],'delete',entity)" mat-icon-button color="warn">
+                <mat-icon>delete_outline</mat-icon>
+              </button>
+              <button *ngIf="entity==='Recover Account' || entity==='Recover Product'"  (click)="addAndGetId(row[cols[0]],'recover',entity)" mat-icon-button color="warn">
+                <mat-icon>history</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+           <!--Loading-->
+           <ng-container matColumnDef="loading">
+            <td mat-footer-cell *matFooterCellDef [attr.colspan]="cols?.length">
+              Loading data...
+            </td>
+          </ng-container>
+        
+          <!--No data-->
+          <ng-container matColumnDef="noData">
+            <td mat-footer-cell *matFooterCellDef [attr.colspan]="cols?.length">
+              No data
+            </td>
+          </ng-container>
+      
+          <tr mat-header-row *matHeaderRowDef="cols"></tr>
+          <tr mat-row *matRowDef="let row; columns: cols;let i = index"
+          (click)="selectedRow = selectedRow === row ? null : row" [ngClass]="{ 'selected': row === selectedRow }" class="sharedTableRow">
+          ></tr>
+          <tr mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':list!=null}"></tr>
+            <tr mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(list!=null && list.data.length==0)}"></tr>
+        </table>
+        <mat-paginator 
+          [pageSizeOptions]="[4,8,12,20,list?.paginator?.length!]" 
+          pageSize="10"
+          showFirstLastButtons>
+        </mat-paginator>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template appSharedModal></ng-template>

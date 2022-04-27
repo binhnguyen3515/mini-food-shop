@@ -1,0 +1,178 @@
+<div>
+  <h1 class="text-center title">{{action}} Account</h1>
+  <div class="wrapper" [formGroup]="formAccount">
+    <div class="main_field" [ngClass]="{'disable':(id?.value!==tokenStorage.getUser().id && rolesByEdit.indexOf('AD')>-1)||(id?.value!==tokenStorage.getUser().id && rolesByEdit.indexOf('MN')>-1 && rolesByEdit.indexOf('AD')==-1)}">
+  
+      <div class="main_image_field_container">
+        <img class="image_" *ngIf="previews.length>0;else noImage" [src]="action==='Add'?previews[0]:action==='Edit'&&selectedFileAction==='choosing'?previews[0]:baseHostImageUrl+previews[0]" alt="" height="200" width="200">
+        <ng-template #noImage>
+          <img class="image_" [src]="'assets/img/avatar/empty_user.png'" height="200" width="200" alt="">
+        </ng-template>
+      </div>
+
+      <div class="second_row_content">
+        <mat-form-field appearance="outline" class="mat-form-field-readonly">
+          <mat-label>User-ID</mat-label>
+          <input color="warn" matInput placeholder="Ex. UserID.." formControlName="id" readonly>
+          <mat-icon matSuffix>drag_indicator</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Name</mat-label>
+          <input color="warn" matInput placeholder="Ex. Name.." formControlName="name">
+          <mat-icon matSuffix>drag_indicator</mat-icon>
+          <mat-error *ngIf="name!.invalid && (name!.dirty||name!.touched )">
+            <mat-error *ngIf="name!.errors?.['required']">
+              Mời nhập tên
+            </mat-error>
+            <mat-error *ngIf="name!.errors?.['minlength']">
+              Họ tên tối thiểu 2 ký tự
+            </mat-error>
+            <mat-error *ngIf="name!.errors?.['maxlength']">
+              Họ tên tối đa 30 ký tự
+            </mat-error>
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="third_row_content">
+        <mat-form-field appearance="outline">
+          <mat-label>Email</mat-label>
+          <input color="warn" matInput placeholder="Ex. Email.." formControlName="email">
+          <mat-icon matSuffix>drag_indicator</mat-icon>
+          <mat-error *ngIf="email!.invalid && (email!.dirty||email!.touched )">
+            <mat-error *ngIf="email!.errors?.['required']">
+              Bạn chưa nhập email
+            </mat-error>
+            <mat-error *ngIf="email!.errors?.['email']">
+              Email sai định dạng
+            </mat-error>
+            <mat-error *ngIf="email!.errors?.['existedEmail']">
+              Email đã tồn tại
+            </mat-error>
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Phone</mat-label>
+          <input color="warn" matInput placeholder="Ex. Phone.." formControlName="phone">
+          <mat-icon matSuffix>drag_indicator</mat-icon>
+          <mat-error *ngIf="phone!.invalid && (phone!.dirty||phone!.touched )">
+            <mat-error *ngIf="phone!.errors?.['required']">
+              Chưa nhập số điện thoại
+            </mat-error>
+            <mat-error *ngIf="phone!.errors?.['pattern']">
+              Số điện thoại sai định dạng
+            </mat-error>
+            <mat-error *ngIf="phone!.errors?.['existedPhone']">
+              Số điện thoại đã tồn tại
+            </mat-error>
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="password_row_content" *ngIf="action==='Add'">
+        <mat-form-field appearance="outline">
+          <mat-label>Password</mat-label>
+          <input type="password" color="warn" matInput placeholder="Ex. 123.." formControlName="newPass">
+          <mat-icon matSuffix>drag_indicator</mat-icon>
+          <mat-error *ngIf="newPass!.invalid && (newPass!.dirty||newPass!.touched )">
+            <mat-error *ngIf="newPass!.errors?.['required']">
+              Mời nhập mật khẩu mới
+            </mat-error>
+            <mat-error *ngIf="newPass!.errors?.['minlength']">
+              Mật khẩu tối thiểu 6 ký tự
+            </mat-error>
+            <mat-error *ngIf="newPass!.errors?.['maxlength']">
+              Mật khẩu tối đa 20 ký tự
+            </mat-error>
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Re-type password</mat-label>
+          <input type="password" color="warn" matInput placeholder="Ex. 123.." formControlName="repeatNewPass">
+          <mat-icon matSuffix>drag_indicator</mat-icon>
+          <mat-error *ngIf="repeatNewPass!.invalid && (repeatNewPass!.dirty||repeatNewPass!.touched )">
+            <mat-error *ngIf="repeatNewPass!.errors?.['required']">
+              Nhập lại mật khẩu mới
+            </mat-error>
+            <mat-error *ngIf="repeatNewPass!.errors?.['confirmedValidator']">
+              Mật khẩu mới không khớp
+            </mat-error>
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="fourth_row_content">
+        <div class="checkbox_group">
+          <label class="role_title">Role</label>
+          <div class="role_group">
+            <ng-container *ngFor="let role of roles;let i=index">
+              <mat-checkbox [disabled]="(!auth.isAdmin() && role.id=='AD') || (action=='Add' && role.id=='MN' && !auth.isAdmin())" class="role_item" #myCheckbox [checked]="rolesByEdit.indexOf(role.id)>-1"
+               [value]="role.id" (change)="onCheckboxChange($event)">{{role.name}}</mat-checkbox>
+            </ng-container>
+            <!-- <mat-checkbox class="role_item" value="GS" (change)="onCheckboxChange($event)">Guest</mat-checkbox>
+            <mat-checkbox class="role_item" value="SP" (change)="onCheckboxChange($event)">Shipper</mat-checkbox>
+            <mat-checkbox class="role_item" value="MN" (change)="onCheckboxChange($event)">Manager</mat-checkbox>
+            <mat-checkbox class="role_item" value="CSM" (change)="onCheckboxChange($event)">Customer</mat-checkbox> -->
+          </div>
+        </div>
+
+        <div class="radio_group">
+          <label class="gender_title">Gender </label>
+          <mat-radio-group aria-label="Select an option" formControlName="gender" class="radio_group_2">
+            <mat-radio-button [value]="true">Male</mat-radio-button>
+            <mat-radio-button [value]="false">Female</mat-radio-button>
+          </mat-radio-group>
+        </div>
+
+      </div>
+
+      <div class="fifth_row_content">
+        <div class="radio_group">
+          <label class="gender_title">MemberShip </label>
+          <mat-radio-group aria-label="Select an option" formControlName="memberShipID" class="radio_group_2">
+            <mat-radio-button [value]="1">Silver</mat-radio-button>
+            <mat-radio-button [value]="2">Gold</mat-radio-button>
+            <mat-radio-button [value]="3">Platinum</mat-radio-button>
+          </mat-radio-group>
+        </div>
+      </div>
+
+      <div class="sixth_row_content">
+        <mat-form-field appearance="outline">
+          <mat-label>Address</mat-label>
+          <textarea color="warn" matInput placeholder="Ex. Address.." formControlName="address"></textarea>
+          <mat-error *ngIf="address!.invalid && (address!.dirty||address!.touched )">
+            <mat-error *ngIf="address!.errors?.['maxlength']">
+              Địa chỉ tối đa 50 ký tự
+            </mat-error>
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="file_input mt-3" [ngClass]="{'disable':(id?.value!==tokenStorage.getUser().id && rolesByEdit.indexOf('AD')>-1)||(id?.value!==tokenStorage.getUser().id && rolesByEdit.indexOf('MN')>-1 && rolesByEdit.indexOf('AD')>-1)}">
+      <mat-form-field [style.width.%]="100" class="choose" appearance="outline">
+        <mat-label>File(s) choose</mat-label>
+        <ngx-mat-file-input #removableInput matInput type="file" accept="image/*" formControlName="photo" (change)="selectFiles($event)" >
+        </ngx-mat-file-input>
+        <mat-error *ngIf="photo!.invalid && (photo!.dirty||photo!.touched )">
+          <mat-error *ngIf="photo!.errors?.['required']">
+            Chọn ít nhất 1 ảnh!
+          </mat-error>
+        </mat-error>
+        <button mat-icon-button matSuffix *ngIf="!removableInput.empty" (click)="removableInput.clear($event);previews = []">
+          <mat-icon>clear</mat-icon>
+        </button>
+        <mat-icon matSuffix *ngIf="removableInput.empty">attach_file</mat-icon>
+      </mat-form-field>
+    </div>
+  </div>
+</div>
+<mat-dialog-actions align="end">
+  <button mat-raised-button color="warn" mat-dialog-close >Cancel</button>
+  <button mat-raised-button color="accent" (click)="resetForm()" *ngIf="action==='Add'">Reset</button>
+  <!-- <button mat-raised-button color="accent" [mat-dialog-close]="true" cdkFocusInitial>Save</button> -->
+  <button mat-raised-button color="primary" [disabled]="(id?.value!==tokenStorage.getUser().id && rolesByEdit.indexOf('AD')>-1)||(id?.value!==tokenStorage.getUser().id && rolesByEdit.indexOf('MN')>-1 && rolesByEdit.indexOf('AD')>-1)" cdkFocusInitial (click)="submit()">Save</button>
+</mat-dialog-actions>

@@ -1,0 +1,73 @@
+.admin_header_bar{
+    background: white;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    display: flex;
+    justify-content:space-between;
+    align-items:center;
+}
+.admin_header_title{
+    --arrow:#2196F3;
+    font-size:25px;
+    font-weight: bold;
+    color: white;
+    display: inline-block;
+    position: relative;
+    background:var(--arrow);
+    --size:34px;
+    padding-block: 15px !important;
+}
+
+.admin_header_title::before{
+    
+    content: "";
+    position: absolute;
+    /* border-left:var(--size) solid #2196F3; */
+    border-left:var(--size) solid var(--arrow);
+    border-top:var(--size) solid transparent;
+    border-bottom:var(--size) solid transparent;
+    top:0;   
+    right: -33px;
+}
+
+.user_Info_section{
+    margin-right: 10px;
+    display: flex;
+    align-items: center;
+    /* border-radius: 10px; */
+    border-bottom: 1.5px solid var(--tableMainColor);
+}
+.group_marked_info{
+    margin-right: 10px;
+}
+.group_marked_info h3{
+    margin-bottom:0;
+}
+.user_Info_date_time h3{
+    margin-bottom:0;
+}
+.user_Info_role{
+    /* background:var(--green-color); */
+    color:#000;
+    padding-inline: 15px;
+    /* padding-block:10px; */
+    border-radius: 5px;
+}
+.group_marked_info h3,
+.user_Info_role h3,
+.user_Info_date_time h3,
+.user_Info_name h3{
+    margin-bottom:0;
+    color: rgba(0, 0, 0, 0.671);
+    font-weight: bold;
+    padding:10px;
+    position:relative;
+}
+
+.user_Info_name{
+    display:flex;
+}
+
+.mat-flat-button.mat-primary, .mat-raised-button.mat-primary, .mat-fab.mat-primary, .mat-mini-fab.mat-primary,.mat-icon-button {
+    /* background-color: var(--tableMainColor); */
+    color: rgba(0, 0, 0, 0.671);
+}

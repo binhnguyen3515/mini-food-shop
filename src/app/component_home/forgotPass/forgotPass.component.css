@@ -1,0 +1,53 @@
+.forgotPass{
+    margin: auto;
+    margin-top:150px;
+    margin-bottom:250px;
+}
+
+.forgotPass_wrapper{
+    min-width: 250px;
+    max-width: 500px;
+    background: white;
+    margin:auto;
+    padding: 30px 30px;
+}
+h4{
+    opacity: 0.6;
+    text-align: justify;
+}
+
+.input_fields button{
+    padding: 20px 0;
+    margin-top: 15px;
+    font-weight: bold;
+}
+.input_wrapper{
+    margin-top: 15px;
+    position: relative;
+
+}
+.input_wrapper::before{
+    display: inline-block;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+}
+.input_wrapper input{
+    font-size:1.5rem;
+    padding-block:10px;
+    padding-left:50px;
+}
+
+.input_wrapper.email::after{
+    position: absolute;
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    content: "\f0e0";
+    top: 50%;
+    left: 15px;
+    transform:translateY(-50%);
+    font-size: 1.5rem;
+    color: black;
+    opacity: 0.7;
+}

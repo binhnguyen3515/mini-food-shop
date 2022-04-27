@@ -1,0 +1,180 @@
+table {
+  width: 100%;
+  position: relative;
+  overflow: auto;
+}
+
+h3 {
+  color: white;
+}
+
+.hide {
+  display: none;
+}
+
+.mat-header-cell {
+  background: var(--tableMainColor);
+  font-weight: bold;
+}
+
+th {
+  color: rgb(255, 255, 255);
+  /* font-weight:500; */
+  font-size: 16px;
+}
+
+.search-form-field {
+  width: 100%;
+  max-width: 500px;
+
+}
+
+/* ::ng-deep mat-option:last-child:before {
+  content: 'All';
+}
+
+::ng-deep mat-option:last-child .mat-option-text {
+  display: none;
+} */
+
+.table_wrapper {
+  width: 100%;
+  padding: 10px;
+  padding-block:20px;
+  overflow: auto;
+}
+
+.table_parent_wrapper {
+  display: flex;
+  /* justify-content: center;
+  align-items: center; */
+  height: 100%;
+  overflow: auto;
+}
+
+.table_content_wrapper {
+  /* height: calc(100vh - 500px);
+  max-width: 100%;
+  overflow: auto; */
+
+}
+
+/* input.mat-input-element {
+  height: 18px;
+  font-size:16px;
+} */
+/*change label size*/
+mat-form-field.mat-form-field {
+    font-size: 16px;
+    color: var(--tableMainColor) !important;
+}
+
+
+::ng-deep .mat-focused .mat-form-field-label {
+    /*change color of label*/
+    color: var(--tableMainColor) !important;
+}
+
+::ng-deep.mat-form-field-underline {
+/*change color of underline*/
+background-color: var(--tableMainColor) !important;
+} 
+
+::ng-deep.mat-form-field-ripple {
+/*change color of underline when focused*/
+background-color: var(--tableMainColor) !important;
+}
+
+::-webkit-scrollbar{
+    width:0.25rem;
+}
+::-webkit-scrollbar-track{
+    background:var(--green-color);
+}
+::-webkit-scrollbar-thumb{
+    background:blueviolet;
+}
+
+.manage_field{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.btn_add_product{
+
+}
+
+.mat-flat-button.mat-primary, .mat-raised-button.mat-primary, .mat-fab.mat-primary, .mat-mini-fab.mat-primary {
+  background-color: white;
+  color:var(--tableMainColor);
+  /* margin-bottom: auto; */
+}
+.customCircle{
+  border-radius:50%;
+  width:30px;
+  outline:1px solid gray;
+}
+
+.sharedTableRow{
+  cursor: pointer;
+}
+.selected{
+  background-color:gray;
+}
+
+.selected td{
+  color:white;
+}
+
+/* status custom */
+.danger{
+  width:80px;
+  display:block;
+  padding: 5px;
+  background-color:#35363A;
+  border-radius:5px;
+  color: rgb(235, 118, 118);
+  font-weight: bold;
+  text-align: center;
+}
+.success{
+  width:80px;
+  display:block;
+  padding: 5px;
+  background-color:#35363A;
+  border-radius:5px;
+  color: rgb(55, 209, 55);
+  font-weight: bold;
+  text-align: center;
+}
+.sky{
+  width:80px;
+  display:block;
+  padding: 5px;
+  background-color:#35363A;
+  border-radius:5px;
+  color: rgb(38, 190, 178);
+  font-weight: bold;
+  text-align: center;
+}
+.warning{
+  width:80px;
+  display:block;
+  padding: 5px;
+  background-color:#35363A;
+  border-radius:5px;
+  color: rgb(230, 230, 64);
+  font-weight: bold;
+  text-align: center;
+}
+.secondary{
+  width:80px;
+  display:block;
+  padding: 5px;
+  background-color:#35363A;
+  border-radius:5px;
+  color: rgb(238, 233, 233);
+  font-weight: bold;
+  text-align: center;
+}
+/* status custom edge*/

@@ -1,0 +1,12 @@
+a{
+    text-decoration: none;
+    
+}
+.buy__often-description{
+    width: 100px;
+    height:40px;
+    display: inline-block;
+    word-break: break;
+    overflow: hidden !important;
+    text-overflow: ellipsis;
+}

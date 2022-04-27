@@ -1,0 +1,17 @@
+<div class="products__cart" style="margin-top:24px">
+  <div class="row sm-gutter">
+      <div class="col l-12">
+          <div class="products__sale-off--content c-12">
+              <div class="products__sale-off--title" style="align-items: center;display: flex;">
+                  <h2 class="pt-0">SẢN PHẨM TÌM KIẾM : "{{nameSearch$}}"</h2>
+              </div>
+          </div>
+          <app-sharedProductDisplay *ngIf="listProductAfterSearch$ && listProductAfterSearch$.length>0;else noItem" #searchProduct [productData$]="listProductAfterSearch$"></app-sharedProductDisplay>
+      <ng-template #noItem>
+        <div class="noItemFound_element mb-3">
+            <h2>Không tìm thấy sản phẩm</h2>
+        </div>
+    </ng-template>
+    </div>
+  </div>   
+</div>

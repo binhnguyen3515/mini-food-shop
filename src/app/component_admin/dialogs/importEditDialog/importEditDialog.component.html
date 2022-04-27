@@ -1,0 +1,164 @@
+<mat-dialog-content class="mat-typography" style="height:100%;max-height: 900px;">
+  <div class="import_wrapper">
+    <h1 style="color:var(--mainFormColor);">Import Product(Edit)</h1>
+    <div class="formImport" [formGroup]="formImport">
+      <mat-form-field appearance="outline" class="mat-form-field-readonly">
+        <mat-label>Import_ID</mat-label>
+        <input matInput placeholder="Ex. IP009.." formControlName="id" readonly>
+        <mat-icon matSuffix>drag_indicator</mat-icon>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Address</mat-label>
+        <input matInput placeholder="Ex. 200 Lê Hồng Phong..." formControlName="address">
+        <mat-icon matSuffix>drag_indicator</mat-icon>
+        <mat-error *ngIf="address!.invalid && (address!.dirty||address!.touched )">
+          <mat-error *ngIf="address!.errors?.['required']">
+            Chưa nhập địa chỉ
+          </mat-error>
+          <mat-error *ngIf="address!.errors?.['minlength']">
+            Địa chỉ tối thiểu 10 ký tự
+          </mat-error>
+          <mat-error *ngIf="address!.errors?.['maxlength']">
+            Địa chỉ tối đa 50 ký tự
+          </mat-error>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Import Date</mat-label>
+        <input matInput [matDatepicker]="picker" placeholder="Ex. 02/03/2022" formControlName="date">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-error *ngIf="date!.invalid && (date!.dirty||date!.touched )">
+          <mat-error *ngIf="date!.errors?.['required']">
+            Chưa chọn ngày nhập hàng
+          </mat-error>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Shipper Name</mat-label>
+        <input matInput placeholder="Ex. Phồng Tôm.." formControlName="shipperName">
+        <mat-icon matSuffix>drag_indicator</mat-icon>
+        <mat-error *ngIf="shipperName!.invalid && (shipperName!.dirty||shipperName!.touched )">
+          <mat-error *ngIf="shipperName!.errors?.['required']">
+            Chưa nhập tên shipper
+          </mat-error>
+          <mat-error *ngIf="shipperName!.errors?.['minlength']">
+            Tên tối thiểu 2 ký tự
+          </mat-error>
+          <mat-error *ngIf="shipperName!.errors?.['maxlength']">
+            Tên tối đa 50 ký tự ký tự
+          </mat-error>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Staff Name</mat-label>
+        <input matInput placeholder="Ex. Johnny Sin.." formControlName="staffName">
+        <mat-icon matSuffix>drag_indicator</mat-icon>
+        <mat-error *ngIf="staffName!.invalid && (staffName!.dirty||staffName!.touched )">
+          <mat-error *ngIf="staffName!.errors?.['required']">
+            Chưa nhập tên nhân viên
+          </mat-error>
+          <mat-error *ngIf="staffName!.errors?.['minlength']">
+            Tên tối thiểu 2 ký tự
+          </mat-error>
+          <mat-error *ngIf="staffName!.errors?.['maxlength']">
+            Tên tối đa 50 ký tự ký tự
+          </mat-error>
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <mat-dialog-actions align="end">
+      <button mat-raised-button color="accent" (click)="resetImport()">Reset</button>
+      <button mat-raised-button color="primary" (click)="submitImport()" cdkFocusInitial >Save</button>
+    </mat-dialog-actions>
+  </div>
+  <br>
+  <hr>
+
+  <div class="import_Info_wrapper">
+    <h1 style="color:var(--mainFormColor);">Import Info(Edit)</h1>
+    <app-adminImportInnerTable *ngIf="sendData" #send [data]="sendData" (rowData)="getRowData($event)" (refreshRequest)="reSendData($event)"></app-adminImportInnerTable>
+    <div [formGroup]="formImportProduct" class="formImportProduct" *ngIf="!hideContent">
+      <mat-form-field appearance="outline" class="mat-form-field-readonly">
+        <mat-label>Import_Info_Id</mat-label>
+        <input matInput placeholder="Ex. Import Info ID.." formControlName="importInfoId" readonly>
+        <mat-icon matSuffix>drag_indicator</mat-icon>
+      </mat-form-field>
+  
+      <mat-form-field appearance="outline" class="mat-form-field-readonly">
+        <mat-label>Name</mat-label>
+        <input matInput placeholder="Ex. Dưa leo.." formControlName="name" readonly>
+        <mat-icon matSuffix>drag_indicator</mat-icon>
+        <mat-error *ngIf="name!.invalid && (name!.dirty||name!.touched )">
+          <mat-error *ngIf="name!.errors?.['required']">
+            Chưa nhập tên sản phẩm!
+          </mat-error>
+          <mat-error *ngIf="name!.errors?.['minlength']">
+            Tên sản phẩm tối thiểu 2 ký tự
+          </mat-error>
+          <mat-error *ngIf="name!.errors?.['maxlength']">
+            Tên sản phẩm tối đa 250 ký tự
+          </mat-error>
+        </mat-error>
+      </mat-form-field>
+  
+      <mat-form-field appearance="outline">
+        <mat-label>Price Import</mat-label>
+        <input matInput placeholder="Ex. 10000 VNĐ.." formControlName="priceImport">
+        <mat-icon matSuffix>drag_indicator</mat-icon>
+        <mat-error *ngIf="priceImport!.invalid && (priceImport!.dirty||priceImport!.touched )">
+          <mat-error *ngIf="priceImport!.errors?.['required']">
+            Chưa nhập giá sản phẩm
+          </mat-error>
+          <mat-error *ngIf="priceImport!.errors?.['min']">
+            Giá tối thiểu là 0 VND
+          </mat-error>
+          <mat-error *ngIf="priceImport!.errors?.['max']">
+            Giá tối đa là 1 tỷ
+          </mat-error>
+        </mat-error>
+      </mat-form-field>
+  
+      <mat-form-field appearance="outline">
+        <mat-label>Quantity Import</mat-label>
+        <input matInput placeholder="Ex. 0-500.." formControlName="quantityImport">
+        <mat-icon matSuffix>drag_indicator</mat-icon>
+        <mat-error *ngIf="quantityImport!.invalid && (quantityImport!.dirty||quantityImport!.touched )">
+          <mat-error *ngIf="quantityImport!.errors?.['required']">
+            Chưa nhập số lượng
+          </mat-error>
+          <mat-error *ngIf="quantityImport!.errors?.['pattern']">
+            Số lượng phải là số nguyên
+          </mat-error>
+          <mat-error *ngIf="quantityImport!.errors?.['min'] && !quantityImport!.errors?.['pattern']">
+            Số lượng tối thiểu là 1
+          </mat-error>
+          <mat-error *ngIf="quantityImport!.errors?.['max'] && !quantityImport!.errors?.['pattern']">
+            Số lượng tối đa là 1 triệu
+          </mat-error>
+        </mat-error>
+      </mat-form-field>
+  
+      <mat-form-field appearance="outline" class="mat-form-field-readonly">
+        <mat-label>Import Status</mat-label>
+        <mat-select formControlName="status">
+          <mat-option *ngFor="let a of statusList" [value]="a" disabled>
+            {{a==1?"Có hàng":a==2?"Chờ bán":a==3?"Hết hàng":"Thu hồi"}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="status!.invalid && (status!.dirty||status!.touched )">
+          <mat-error *ngIf="status!.errors?.['required']">
+            Chưa chọn trạng thái
+          </mat-error>
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+ 
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-raised-button color="warn" mat-dialog-close >Cancel</button>
+  <button mat-raised-button color="accent" *ngIf="!hideContent" (click)="formImportProduct.reset();hideContent=true">Reset</button>
+  <!-- <button mat-raised-button color="accent" [mat-dialog-close]="true" cdkFocusInitial>Save</button> -->
+  <button mat-raised-button color="primary" *ngIf="!hideContent" cdkFocusInitial (click)="submit()" >Save</button>
+</mat-dialog-actions>

@@ -1,0 +1,109 @@
+.title{
+    background:var(--mainFormColor);
+    color: white;
+    padding-block:10px;
+    min-width:600px;
+}
+.main_image_field_container{
+    display: flex;
+    justify-content: center;
+    padding-block: 10px;
+}
+.image_{
+    border-radius: 50%;
+    /* padding:10px; */
+    /* outline:3px solid #FF4081; */
+    /* border:8px solid var(--mainFormColor); */
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    object-position: center center;
+    width:150px;
+    height:150px;
+    object-fit: contain;
+}
+.second_row_content,.third_row_content,.password_row_content{
+    display:grid;
+    grid-template-columns: repeat(2,1fr);
+    gap: 10px;
+}
+.sixth_row_content{
+    display:grid;
+    grid-template-columns: 1fr;
+}
+.radio_group *,.checkbox_group *{
+    font-size:16px;
+}
+.role_title,.gender_title{
+    width:100px;
+    display: inline-block;
+    color: var(--mainFormColor);
+}
+.checkbox_group,.radio_group{
+    margin-bottom: 15px;
+    border: 1px solid var(--mainFormColor);
+    padding-block: 5px;
+    padding-inline: 10px;
+}
+.role_group,.radio_group_2{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+    gap: 15px;
+    
+}
+:host::ng-deep .mat-radio-label-content{
+    padding-left:4px;
+}
+:host::ng-deep .mat-checkbox-label{
+    padding-right:15px;
+    padding-left:0px;
+}
+:host mat-form-field.mat-form-field {
+    font-size: 16px;
+    color: var(--mainFormColor);
+}
+
+
+:host ::ng-deep .mat-focused .mat-form-field-label {
+    /*change color of label*/
+    color: var(--mainFormColor) !important;
+}
+
+:host ::ng-deep.mat-form-field-underline {
+/*change color of underline*/
+background-color: var(--mainFormColor) !important;
+} 
+
+:host ::ng-deep.mat-form-field-ripple {
+/*change color of underline when focused*/
+background-color: var(--mainFormColor) !important;
+}
+
+:host ::ng-deep.mat-form-field-appearance-outline .mat-form-field-outline {
+    color: var(--mainFormColor) !important;
+}
+
+:host ::ng-deep.mat-form-field-appearance-outline .mat-form-field-outline-end,
+:host ::ng-deep.mat-form-field-appearance-outline .mat-form-field-outline-start {
+    border-radius: 0 !important;
+}
+:host ::ng-deep.mat-dialog-content{
+    max-height: 930px;
+}
+/*file edge*/
+
+/*scroll bar*/
+::-webkit-scrollbar{
+    width:1rem;
+}
+::-webkit-scrollbar-track{
+    background:rgba(0, 0, 0, 0.575);
+}
+::-webkit-scrollbar-thumb{
+    border-radius: 10px;
+    /* border: 4px solid transparent; */
+    /* background-clip: content-box; */
+    background:rgb(224, 139, 42);
+}
+/*scroll bar edge*/
+.disable{
+    pointer-events: none;
+}

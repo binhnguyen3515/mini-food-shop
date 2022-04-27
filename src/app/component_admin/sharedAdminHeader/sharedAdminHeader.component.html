@@ -1,0 +1,26 @@
+<div class="admin_header_bar">
+  <span class="admin_header_title"  style="padding:10px;">{{entity}} Management</span>
+  <div class="user_Info_section">
+      <div class="group_marked_info">
+        <h3>{{utilityService.groupedInfo}}</h3>
+      </div>
+      <div class="user_Info_date_time">
+          <h3>{{currentDate|date:'dd-MM-yyyy, h:mm:ss'}}</h3>
+      </div>
+      <div class="user_Info_role">
+          <h3 *ngIf="tokenStorage.getUser()!==null">
+              {{tokenStorage.getUser().roles?.indexOf('admin')>-1?
+              'Admin':tokenStorage.getUser().roles?.indexOf('manager')>-1?
+              'Manager':tokenStorage.getUser().roles?.indexOf('shipper')>-1?
+              'Shipper':tokenStorage.getUser().roles?.indexOf('customer')>-1?
+            'Customer':'Guest'}}
+          </h3>
+      </div>
+      <div class="user_Info_name" *ngIf="tokenStorage.getUser()!==null">
+          <h3> {{tokenStorage.getUser().name|titlecase}}</h3>
+          <button [routerLink]="['/home/product']" mat-icon-button aria-label="Example icon button with a home icon">
+            <mat-icon>home</mat-icon>
+          </button>
+      </div>
+  </div>
+</div>

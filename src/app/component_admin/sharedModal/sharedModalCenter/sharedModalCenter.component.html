@@ -1,0 +1,6 @@
+<app-deleteComfirm *ngIf="isDeleted" #deleteDialog 
+  [data]="deleteData"
+></app-deleteComfirm>
+
+<app-recoverConfirm *ngIf="isRecovered" #recoverDialog 
+[data]="recoverData"></app-recoverConfirm>

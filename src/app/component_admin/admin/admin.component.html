@@ -1,0 +1,107 @@
+<body>
+  <!--Side bar-->
+  <div class="sidebar">
+    <div class="logo_content">
+      <div class="logo ms-3">
+          <i class="fas fa-crown"></i>
+          <div class="logo_name"><span class="ms-2">Food Shop</span></div>
+      </div>
+      <i class="fas fa-bars" style="cursor: pointer;" id="btn" (click)="onClickToggleSideBar()"></i>
+    </div>
+    <ul class="nav_list">            
+      <li>
+          <a [routerLink]="['/admin/statistics']" routerLinkActive="active">
+              <i class="fas fa-border-none"></i>
+              <span class="links_name">Dashboard</span>
+          </a>
+          <span class="tooltip">Dashboard</span>
+      </li>
+      <li>
+          <a [routerLink]="['/admin/topCustomer']" routerLinkActive="active">
+              <i class="fas fa-trophy"></i>
+              <span class="links_name">Top Customer</span>
+          </a>
+          <span class="tooltip">Top Customer</span>
+      </li>
+      <li>
+        <a [routerLink]="['/admin/import']" routerLinkActive="active">
+          <i class="fas fa-truck-loading"></i>
+              <span class="links_name">Import</span>
+          </a>
+          <span class="tooltip">Import</span>
+      </li>
+      <li>
+        <a [routerLink]="['/admin/product']" routerLinkActive="active">
+              <i class="fas fa-luggage-cart"></i>
+              <span class="links_name">Product</span>
+          </a>
+          <span class="tooltip">Product</span>
+      </li>
+      <li>
+        <a [routerLink]="['/admin/invoice']" routerLinkActive="active">
+          <i class="fas fa-file-invoice-dollar"></i>
+              <span class="links_name">Invoice</span>
+          </a>
+          <span class="tooltip">Invoice</span>
+      </li>
+      <li>               
+        <a [routerLink]="['/admin/account']" routerLinkActive="active">                 
+              <i class="fas fa-user-friends"></i>
+              <span class="links_name">Account</span>                
+              
+          </a>                
+          <span class="tooltip">Account</span>      
+      </li>            
+      <li>
+          <a [routerLink]="['/admin/accountLog']" routerLinkActive="active">
+            <i class="fas fa-clipboard-list"></i>
+              <span class="links_name">Account Log</span>
+              
+          </a>
+          <span class="tooltip">Account Log</span>
+      </li>
+      <li>
+          <a [routerLink]="['/admin/workingLog']" routerLinkActive="active">
+            <i class="fas fa-briefcase"></i>
+              <span class="links_name">Working Log</span>
+              
+          </a>
+          <span class="tooltip">Working Log</span>
+      </li>
+      <li>
+        <a [routerLink]="['/admin/recoverAccount']" routerLinkActive="active">
+            <i class="fas fa-trash"></i>
+              <span class="links_name">Recover Account</span>
+          </a>
+          <span class="tooltip">Recover Account</span>
+      </li>
+      <li>
+        <a [routerLink]="['/admin/recoverProduct']" routerLinkActive="active">
+            <i class="fas fa-trash"></i>
+              <span class="links_name">Recover Product</span>
+          </a>
+          <span class="tooltip">Recover Product</span>
+      </li>
+    </ul>
+    <div class="profile_content">
+      <div class="profile">
+          <div class="profile_details">
+              <img src="assets/img/admin_img/vector-users-icon.jpg" alt="">
+              <div class="name_birthyear" *ngIf="tokenStorage.getUser()!==null">
+                  <div class="name" > {{tokenStorage.getUser().name}}</div>
+                  <div class="birthyear">{{tokenStorage.getUser().roles?.indexOf('admin')>-1?
+                    'Admin':tokenStorage.getUser().roles?.indexOf('manager')>-1?
+                    'Manager':tokenStorage.getUser().roles?.indexOf('shipper')>-1?
+                    'Shipper':tokenStorage.getUser().roles?.indexOf('customer')>-1?
+                  'Customer':'Guest'}}</div>
+              </div>
+          </div>
+          <i class="fas fa-sign-out-alt" id="log_out" (click)="logout()" style="cursor: pointer;"></i>
+      </div>
+    </div>
+  </div>
+  <!--Side bar edge-->
+  <div class="home_content">
+    <router-outlet></router-outlet>
+  </div>
+</body>

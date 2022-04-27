@@ -1,0 +1,33 @@
+.image_component{
+    display: grid;
+    grid-template-columns: repeat(auto-fill,minmax(150px,1fr));
+    gap: 3px;
+    border: 1px solid gray;
+    padding: 5px;
+    
+}
+.image_component img{
+    height:150px;
+    /* display: inline-block; */
+}
+
+mat-form-field.mat-form-field {
+    font-size: 16px;
+    color: var(--green-color);
+}
+
+
+::ng-deep .mat-focused .mat-form-field-label {
+    /*change color of label*/
+    color: var(--green-color) !important;
+}
+
+::ng-deep.mat-form-field-underline {
+/*change color of underline*/
+background-color: var(--green-color) !important;
+} 
+
+::ng-deep.mat-form-field-ripple {
+/*change color of underline when focused*/
+background-color: var(--green-color) !important;
+}

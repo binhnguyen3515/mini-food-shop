@@ -1,0 +1,51 @@
+:host mat-form-field.mat-form-field {
+    font-size: 16px;
+    color: var(--mainFormColor);
+}
+:host ::ng-deep .mat-focused .mat-form-field-label {
+    /*change color of label*/
+    color: var(--mainFormColor) !important;
+}
+
+:host ::ng-deep.mat-form-field-underline {
+/*change color of underline*/
+background-color: var(--mainFormColor) !important;
+} 
+
+:host ::ng-deep.mat-form-field-ripple {
+/*change color of underline when focused*/
+background-color: var(--mainFormColor) !important;
+}
+
+:host ::ng-deep.mat-form-field-appearance-outline .mat-form-field-outline {
+    color: var(--mainFormColor) !important;
+}
+
+:host ::ng-deep.mat-form-field-appearance-outline .mat-form-field-outline-end,
+:host ::ng-deep.mat-form-field-appearance-outline .mat-form-field-outline-start {
+    border-radius: 0 !important;
+}
+
+.formEditInvoice{
+    margin-top: 10px;
+    display: grid;
+    grid-template-columns: repeat(5,1fr);
+    gap: 10px;
+}
+.title_wrapper{
+    display:flex;
+    justify-content:space-between;
+}
+.total_money_wrapper{
+    display:flex;
+    gap: 10px;
+}
+.number{
+    background-color:#FFCA28;
+    color: rgba(0, 0, 0, 0.787);
+    border-radius:0;
+    padding-inline: 15px;
+    padding-block:5px;
+    outline:1px solid rgba(0, 0, 0, 0.753);
+    font-weight: bold;
+}

@@ -1,0 +1,132 @@
+/*file */
+
+.image_component{
+    /* display: grid;
+    grid-template-columns: repeat(auto-fill,minmax(150px,1fr));
+    gap: 3px; */
+    display: inline-block;
+    /* gap:5px; */
+    border: 1px solid var(--mainFormColor);
+    padding-left: 5px;
+    padding-top:5px;
+    width: 100%;
+}
+.main_image_field{
+    display: grid;
+    grid-template-columns: 250px 1fr;
+    gap: 10px;
+}
+.main_image_field .image_{
+    /* object-position: center center; */
+    /* object-fit: contain; */
+    /* width:240px; */
+    width: 100%;
+    height: 100%; 
+    object-fit: contain;
+}
+.main_image_field_container{
+    padding:5px;
+    border: 1px solid var(--mainFormColor);
+    /* display:flex;
+    align-items: center;
+    justify-content: center; */
+    width:250px;
+    height:250px;
+}
+.main_image_field_right_content{
+    width: 100%;
+}
+.first_part_right_content{
+    display:grid;
+    grid-template-columns: repeat(4,1fr);
+    gap: 10px;
+}
+.second_part_right_content{
+    display:grid;
+    grid-template-columns: 1fr 1.5fr 1.5fr;
+    gap: 10px;
+}
+.third_part_right_content{
+    display: grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:10px;
+}
+.detailProduct{
+    margin-top: 15px;
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:10px;
+}
+.productInfo{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
+}
+.description{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap: 10px;
+}
+.image_component img{
+    height:150px;
+    padding-right: 5px;
+    padding-bottom: 5px;
+    /* display: inline-block; */
+}
+
+:host mat-form-field.mat-form-field {
+    font-size: 16px;
+    color: var(--mainFormColor);
+}
+
+
+:host ::ng-deep .mat-focused .mat-form-field-label {
+    /*change color of label*/
+    color: var(--mainFormColor) !important;
+}
+
+:host ::ng-deep.mat-form-field-underline {
+/*change color of underline*/
+background-color: var(--mainFormColor) !important;
+} 
+
+:host ::ng-deep.mat-form-field-ripple {
+/*change color of underline when focused*/
+background-color: var(--mainFormColor) !important;
+}
+
+:host ::ng-deep.mat-form-field-appearance-outline .mat-form-field-outline {
+    color: var(--mainFormColor) !important;
+}
+
+:host ::ng-deep.mat-form-field-appearance-outline .mat-form-field-outline-end,
+:host ::ng-deep.mat-form-field-appearance-outline .mat-form-field-outline-start {
+    border-radius: 0 !important;
+}
+:host ::ng-deep.mat-dialog-content{
+    max-height: 930px;
+}
+/*file edge*/
+
+/*scroll bar*/
+::-webkit-scrollbar{
+    width:1rem;
+}
+::-webkit-scrollbar-track{
+    background:rgba(0, 0, 0, 0.575);
+}
+::-webkit-scrollbar-thumb{
+    border-radius: 10px;
+    /* border: 4px solid transparent; */
+    /* background-clip: content-box; */
+    background:rgb(224, 139, 42);
+}
+/*scroll bar edge*/
+
+:host ::ng-deep mat-option:last-child:before {
+    content: '';
+  }
+  
+:host ::ng-deep mat-option:last-child .mat-option-text {
+    display: unset;
+}

@@ -1,0 +1,26 @@
+<div class="app">
+  <!--header start-->
+    <app-header></app-header>
+  <!--header end-->
+  <div class="app__container">
+    <div class="grid wide">
+      <div class="row sm-gutter app__content">
+        <!--category start-->
+        <div class="col col-lg-2">
+          <app-category></app-category>
+        </div>
+        
+        <!--category start end-->
+
+        <!--container star-->
+        <div class="col-lg-10">
+          <router-outlet style="position: relative !important;"></router-outlet>
+          <!--footer-->
+          <app-footer></app-footer>
+          <!--footer edge-->
+        </div>
+        <!--container star edge-->
+      </div>
+    </div>
+  </div>
+</div>

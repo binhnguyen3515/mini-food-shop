@@ -1,0 +1,156 @@
+table {
+  width: 100%;
+  min-width: 900px;
+  position: relative;
+  overflow: auto;
+}
+
+h3 {
+  color: white;
+}
+
+.hide {
+  display: none;
+}
+
+.mat-header-cell {
+  background: var(--mainFormColor);
+  font-weight: bold;
+}
+.mat-cell{
+ 
+}
+th {
+  color: rgb(255, 255, 255);
+  /* font-weight:500; */
+  font-size: 16px;
+}
+
+.search-form-field {
+  width: 100%;
+  max-width: 300px;
+
+}
+
+/* :host::ng-deep mat-option:last-child:before {
+  content: 'All' !important;
+}
+
+:host::ng-deep mat-option:last-child .mat-option-text {
+  display: none !important;
+} */
+
+.table_wrapper {
+  width: 100%;
+  /* padding: 10px; */
+  /* padding-block:20px; */
+  overflow: auto;
+}
+
+.table_parent_wrapper {
+  display: flex;
+  /* justify-content: center;
+  align-items: center; */
+  height: 100%;
+  overflow: auto;
+}
+
+.table_content_wrapper {
+  /* height: calc(100vh - 500px);
+  max-width: 100%;
+  overflow: auto; */
+
+}
+
+/* input.mat-input-element {
+  height: 18px;
+  font-size:16px;
+} */
+/*change label size*/
+mat-form-field.mat-form-field {
+    font-size: 16px;
+    color: var(--mainFormColor) !important;
+}
+
+
+:host::ng-deep .mat-focused .mat-form-field-label {
+    /*change color of label*/
+    color: var(--mainFormColor) !important;
+}
+
+:host::ng-deep.mat-form-field-underline {
+/*change color of underline*/
+background-color: var(--mainFormColor) !important;
+} 
+
+:host::ng-deep.mat-form-field-ripple {
+/*change color of underline when focused*/
+background-color: var(--mainFormColor) !important;
+}
+
+::-webkit-scrollbar{
+    width:0.25rem;
+}
+::-webkit-scrollbar-track{
+    background:var(--mainFormColor);
+}
+::-webkit-scrollbar-thumb{
+    background:blueviolet;
+}
+
+.manage_field{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-right: 5px;
+}
+.status_group{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.formEditInvoice{
+  display: flex;
+  padding-right: 5px;
+  gap: 10px;
+  justify-content: space-between;
+}
+.group_field{
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 10px;
+}
+.btn_add_product{
+
+}
+
+.mat-flat-button.mat-primary, .mat-raised-button.mat-primary, .mat-fab.mat-primary, .mat-mini-fab.mat-primary {
+  background-color: white;
+  color:var(--tableMainColor);
+  /* margin-bottom: auto; */
+}
+
+.mat-paginator{
+  background: rgb(202, 202, 216);
+}
+.userInfo{
+  display: flex;
+  padding-block:20px;
+  padding-inline:24px;
+  align-items: center;
+  justify-content:space-between;
+  background:green;
+  color: white;
+  font-weight:bold;
+}
+
+.sharedTableRow{
+  cursor: pointer;
+}
+.selected{
+  background-color:gray;
+}
+
+.selected td{
+  color:white;
+}

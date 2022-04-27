@@ -1,0 +1,11 @@
+<div class="file_upload">
+  <mat-form-field class="choose" appearance="fill">
+    <mat-label>File(s) choose</mat-label>
+    <ngx-mat-file-input #removableInput matInput type="file" accept="image/*" formControlName="files" multiple (change)="selectFiles($event)" >
+    </ngx-mat-file-input>
+  </mat-form-field>
+</div>
+<div class="image_component" *ngIf="previews.length>0">
+  <img *ngFor='let preview of previews' [src]="preview" class="preview">
+</div>
+

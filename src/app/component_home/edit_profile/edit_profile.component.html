@@ -1,0 +1,145 @@
+<div class="px-2">
+  <a [routerLink]="['/home/paymentLog']" style="text-decoration: none;">
+    <div class="return__history-title">
+        <span><i class="fas fa-chevron-left"></i> Quay về lịch sử mua hàng</span>
+    </div>                        
+  </a>
+  <!-- sửa thông tin khách hàng start -->
+  <div action="">
+    <div class="edit__customer">
+        <div class="edit__customer-title">
+            <span><i class="fas fa-user"></i> Thông tin cá nhân</span>
+        </div>
+        <div [formGroup]="formUpdateProfile" class="edit__customer-content">
+            <div class="edit__customer-radio">
+                <div class="form-check ms-0">
+                    <input formControlName="gender" [value]="true" class="form-check-input" type="radio" name="gender" id="flexRadioDefault1">
+                    <label class="form-check-label" for="flexRadioDefault1">
+                      Anh
+                    </label>
+                  </div>
+  
+                  <div class="form-check">
+                    <input formControlName="gender" [value]="false" class="form-check-input" type="radio" name="gender" id="flexRadioDefault2" >
+                    <label class="form-check-label" for="flexRadioDefault2">
+                      Chị
+                    </label>
+                  </div>
+  
+                  <div class="edit__customer--name margin-top-edit">
+                      <span>Họ và tên :</span>
+                      <input formControlName="name" type="text" placeholder="quyennguyen">
+                  </div>
+                  <div *ngIf="name!.invalid && (name!.dirty||name!.touched )" class="text-danger fw-bold fs-4">
+                    <div *ngIf="name!.errors?.['required']">
+                      Mời nhập tên
+                    </div>
+                    <div *ngIf="name!.errors?.['minlength']">
+                      Họ tên tối thiểu 2 ký tự
+                    </div>
+                    <div *ngIf="name!.errors?.['maxlength']">
+                      Họ tên tối đa 30 ký tự
+                    </div>
+                  </div>
+                  <div class="edit__customer--name">
+                    <span>Số điện thoại :</span>
+                    <input formControlName="phone" type="text" placeholder="036839571">
+                </div>
+                <div *ngIf="phone!.invalid && (phone!.dirty||phone!.touched )" class="text-danger fw-bold fs-4">
+                    <div *ngIf="phone!.errors?.['required']">
+                      Mời nhập số điện thoại
+                    </div>
+                    <div *ngIf="phone!.errors?.['pattern']">
+                      Số điện thoại sai định dạng
+                    </div>
+                    <div *ngIf="phone!.errors?.['existedPhone']">
+                      Số điện thoại đã tồn tại
+                    </div>
+                  </div>
+                <div class="edit__customer--name">
+                    <span>Email :</span>
+                    <input formControlName="email" type="text" placeholder="abc@gmail.com">
+                </div>
+                <div *ngIf="email!.invalid && (email!.dirty||email!.touched )" class="text-danger fw-bold fs-4">
+                    <div *ngIf="email!.errors?.['required']">
+                      Bạn chưa nhập email
+                    </div>
+                    <div *ngIf="email!.errors?.['email']">
+                      Email sai định dạng
+                    </div>
+                    <div *ngIf="email!.errors?.['existedEmail']">
+                      Email đã tồn tại
+                    </div>
+                  </div>
+                <div class="edit__customer--email margin-bottom-edit">
+                    <input formControlName="address" type="text" placeholder="Nhập địa chỉ (Không bắt buộc)">
+                </div>
+                <div *ngIf="address!.invalid && (address!.dirty||address!.touched )" class="text-danger fw-bold fs-4">
+                    <div *ngIf="address!.errors?.['maxlength']">
+                      Địa chỉ tối đa 50 ký tự
+                    </div>
+                  </div>
+                <div class="edit__customer--email margin-bottom-edit">
+                    <input type="file" accept="image/*" (change)="selectFiles($event)" placeholder="Chọn ảnh (Không bắt buộc)">
+                </div>
+                <div class="edit__customer-btn mt-4">
+                    <button class="btn btn--green  history-btn" (click)="submitProfile()">Lưu thông tin chỉnh sửa</button>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+  <!-- sửa thông tin khách hàng end -->
+  
+  <!-- sửa mật khẩu khách hàng start -->
+  <div action="">
+    <div class="edit__customer">
+        <div class="edit__customer-title">
+            <span><i class="fas fa-lock"></i> Thay đổi mật khẩu</span>
+        </div>
+        <div [formGroup]="formUpdatePassword" class="edit__customer-content">
+            <div class="edit__customer-radio">                                      
+                <div class="edit__customer--email updatePassword_field mt-1">
+                    <input formControlName="currentPass" type="password" placeholder="Mật khẩu cũ" style="color: #999999;">
+                </div>
+                <div *ngIf="currentPass!.invalid && (currentPass!.dirty||currentPass!.touched )" class="text-danger fw-bold fs-4">
+                    <div *ngIf="currentPass!.errors?.['required']">
+                      Mời nhập mật khẩu
+                    </div>
+                  </div>
+                <div class="edit__customer--email updatePassword_field">
+                    <input formControlName="newPass" type="password" placeholder="Mật khẩu mới" style="color: #999999;">
+                </div>
+                <div *ngIf="newPass!.invalid && (newPass!.dirty||newPass!.touched )" class="text-danger fw-bold fs-4">
+                    <div *ngIf="newPass!.errors?.['required']">
+                      Mời nhập mật khẩu mới
+                    </div>
+                    <div *ngIf="newPass!.errors?.['minlength']">
+                      Mật khẩu tối thiểu 6 ký tự
+                    </div>
+                    <div *ngIf="newPass!.errors?.['maxlength']">
+                      Mật khẩu tối đa 20 ký tự
+                    </div>
+                  </div>
+                <div class="edit__customer--email updatePassword_field">
+                    <input formControlName="repeatNewPass" type="password" placeholder="Nhập lại mật khẩu mới" style="color: #999999;">
+                </div>
+                <div *ngIf="repeatNewPass!.invalid && (repeatNewPass!.dirty||repeatNewPass!.touched )" class="text-danger fw-bold fs-4">
+                    <div *ngIf="repeatNewPass!.errors?.['required']">
+                        Nhập lại mật khẩu mới
+                      </div>
+                  </div>
+                  <div *ngIf="repeatNewPass!.errors?.['confirmedValidator']" class="text-danger fw-bold fs-4">
+                    Mật khẩu mới không khớp
+                </div>
+                <div class="edit__customer-btn mt-4">
+                    <button class="btn btn--green  history-btn" (click)="submitUpdatePassword()">Cập nhập mật khẩu</button>
+                    <button (click)="logout()" class="btn" style="background-color: var(--white-color) !important; color: var(--green-color) !important;">
+                     Thoát tài khoản </button>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+  <!-- sửa mật khẩu khách hàng end -->
+</div>

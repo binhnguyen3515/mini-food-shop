@@ -1,0 +1,84 @@
+.disabled{
+    pointer-events: none;
+    opacity: 0.7;
+}
+
+.empty_cart{
+    background:white ;
+    text-align: center;
+}
+
+a{
+    text-decoration: none;
+}
+
+.payment__form{
+    width: 100%;
+    max-width: 620px;
+    margin: 5px auto;
+    margin-bottom:25px;
+    display: grid;
+    grid-template-areas: 
+    "a b"
+    "c c"
+    "d d";
+    column-gap:10px;
+    row-gap:10px;
+    grid-template-columns: 1fr 3fr;
+    transition: all, 0.6s;
+}
+
+.payment__form input{
+    height:48px;
+    font-size: 1.5rem;
+    background: rgba(233, 233, 233, 0.5);
+    padding-left: 40px;
+    border-radius:0;
+}
+.payment__form .c textarea {
+    font-size: 2rem;
+    font-weight: 500;
+    background: rgba(233, 233, 233, 0.5);
+}
+.payment__form .a{
+    grid-area: a;
+}
+.payment__form .a .wrapper{
+    position: relative;
+}
+.payment__form .b .wrapper{
+    position: relative;
+}
+.payment__form .a .wrapper::after{
+    content:url('data:image/svg+xml,%3Csvg xmlns="http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg" width="1.5em" height="1.5em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"%3E%3Cpath d="M20.487 17.14l-4.065-3.696a1.001 1.001 0 0 0-1.391.043l-2.393 2.461c-.576-.11-1.734-.471-2.926-1.66c-1.192-1.193-1.553-2.354-1.66-2.926l2.459-2.394a1 1 0 0 0 .043-1.391L6.859 3.513a1 1 0 0 0-1.391-.087l-2.17 1.861a1 1 0 0 0-.29.649c-.015.25-.301 6.172 4.291 10.766C11.305 20.707 16.323 21 17.705 21c.202 0 .326-.006.359-.008a.992.992 0 0 0 .648-.291l1.86-2.171a.997.997 0 0 0-.085-1.39z" fill="currentColor"%2F%3E%3C%2Fsvg%3E');
+    position: absolute;
+    top:50%;
+    transform: translateY(-50%);
+    left:10px;
+}
+.payment__form .b{
+    grid-area: b;
+}
+.payment__form .b .wrapper::after{
+    content:url('data:image/svg+xml,%3Csvg xmlns="http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg" width="1.5em" height="1.5em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"%3E%3Cpath d="M12 2C7.589 2 4 5.589 4 9.995C3.971 16.44 11.696 21.784 12 22c0 0 8.029-5.56 8-12c0-4.411-3.589-8-8-8zm0 12c-2.21 0-4-1.79-4-4s1.79-4 4-4s4 1.79 4 4s-1.79 4-4 4z" fill="currentColor"%2F%3E%3C%2Fsvg%3E');
+    position: absolute;
+    top:50%;
+    transform: translateY(-50%);
+    left:10px;
+}
+.payment__form .c{
+    grid-area: c;
+}
+
+.payment__form .d{
+    grid-area: d;
+    font-size: 2rem;
+    font-weight: 500;
+    height:48px;
+}
+
+.hideDefault{
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+}

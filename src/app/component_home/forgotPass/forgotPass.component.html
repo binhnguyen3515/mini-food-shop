@@ -1,0 +1,23 @@
+<div class="forgotPass">
+  <div class="forgotPass_wrapper">
+    <h4>Quý khách vui lòng nhập email để khôi phục mật khẩu</h4>
+
+    <div [formGroup]="formForgotPass" class="input_fields">
+      <div class="input_wrapper email">
+        <input formControlName="email" class="form-control" type="text" placeholder="Email...">
+      </div>
+      <div *ngIf="email!.invalid && (email!.dirty||email!.touched )" class="text-danger fw-bold fs-4">
+        <div *ngIf="email!.errors?.['required']">
+          Bạn chưa nhập email
+        </div>
+        <div *ngIf="email!.errors?.['maxLength']">
+          Email tối đa 50 ký tự
+        </div>
+        <div *ngIf="email!.errors?.['email']">
+          Email sai định dạng
+        </div>
+      </div>
+      <button class="btn btn-success form-control" (click)="submit()">Khôi phục</button>
+    </div>
+  </div>
+</div>

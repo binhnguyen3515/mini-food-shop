@@ -1,0 +1,13 @@
+a{
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.hidden{
+    display: none;
+}
+.hideSearchBoxA,.hideSearchBoxB{
+    visibility: hidden;
+    opacity: 0;
+    height: 0;
+}

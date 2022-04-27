@@ -1,0 +1,154 @@
+<div class="px-2">
+  <div class="purchase__history-header">
+    <div class="purchase__history-header--name">
+        <span>{{tokenStorage.getUser()?"Lịch sử mua hàng của ("+tokenStorage.getUser().name+")":"Lịch sử đơn hàng của bạn"}}</span>
+    </div>
+  
+  <div class="purchase__history-header__content">
+    <a [routerLink]="['/home/profile']">
+        <div class="purchase__history-header__edit"><i class="fas fa-pencil-alt"></i> Sửa thông tin</div>
+    </a>
+    <a style="cursor: pointer;">
+        <div class="purchase__history-header__logout" (click)="logout()"><i class="fas fa-sign-out-alt"></i> Thoát tài khoản</div>
+    </a>
+  </div>  
+  </div>
+  
+  <div class="purchase__history-body px-3">
+  <div class="purchase_title">
+    <span>Lịch sử mua hàng</span>
+  </div>
+  <ng-template #noItem>
+    <div class="purchase__history--content">
+      <img src="https://www.bachhoaxanh.com/Content/images/wishlistempty_1.png" alt="" >
+      
+      <span class="purchase__history--no-history">Lịch sử mua hàng của anh đang trống.
+          Trải nghiệm mua sắm với chúng tôi ngay bây giờ.</span>
+    </div>
+  </ng-template>
+  <div *ngIf="(invoice$|async)?.length;else noItem">
+    <div class="order_item" *ngFor="let i of (invoice$ | async  ) |paginate:{id:'paymentLogPagination',itemsPerPage:4,currentPage:page_Invoice,
+    totalItems:(invoice$|async)?.length} ">
+      <div class="order_title bg-{{i.status|pipeInvoice}} rounded-2">
+        <h3><i class="fas fa-bars me-3" (click)="showInvoiceDetail($event)"></i>Invoice: {{i.id}}</h3>
+        <h3>Date: {{i.date|date:'dd-MM-yyyy'}}</h3>
+        <h3 class="text-end">Status: <span class="badge bg-warning status text-dark">{{i.status}}</span></h3>
+        <h3 class="text-end">{{i.totalPaymentNet|number}} VND</h3>
+      </div>
+      <div class="order_details_title hidden" style="background:rgb(231, 230, 230)">
+        <div class="order_details_number"><h3>No</h3></div>
+        <div class="order_details_name"><h3>Tên sản phẩm</h3></div>
+        <div class="order_details_price"><h3 class="text-end">Đơn giá</h3></div>
+        <div class="order_details_quantity"><h3 class="text-center">Số lượng</h3></div>
+        <div class="order_details_discount"><h3 class="text-end">(%)</h3></div>
+        <div class="order_details_sum"><h3 class="text-end">Tổng</h3></div>
+      </div>
+      <div class="order_details_title hidden" *ngFor="let dt of i.detailedInvoice;index as no">
+        <div class="order_details_number"><h3>{{no+1}}</h3></div>
+        <div class="order_details_name"><h3>{{dt.name}}</h3></div>
+        <div class="order_details_price"><h3 class="text-end">{{dt.price|number}}</h3></div>
+        <div class="order_details_quantity"><h3 class="text-center">{{dt.quantity}}</h3></div>
+        <div class="order_details_discount"><h3 class="text-end">{{dt.discount*100}}%</h3></div>
+        <div class="order_details_sum"><h3 class="text-end">{{dt.price*dt.quantity*(1-dt.discount)|number}}</h3></div>
+      </div>
+    </div>
+  </div>
+  <!-- <div class="order_item">
+    <div class="order_title bg-info rounded-2">
+      <h3><i class="fas fa-bars me-3" (click)="showInvoiceDetail($event)" #showInvoiceDetailClick></i>Invoice: 0001</h3>
+      <h3>Date: 20-06-2022</h3>
+      <h3 class="text-end">Status: <span class="badge bg-warning status text-dark">Shipping</span></h3>
+      <h3 class="text-end">26,500,000 VND</h3>
+    </div>
+    <div class="order_details_title hidden" style="background:rgb(231, 230, 230)">
+      <div class="order_details_number"><h3>No</h3></div>
+      <div class="order_details_name"><h3>Tên sản phẩm</h3></div>
+      <div class="order_details_price"><h3 class="text-end">Đơn giá</h3></div>
+      <div class="order_details_quantity"><h3 class="text-end">Số lượng</h3></div>
+      <div class="order_details_sum"><h3 class="text-end">Tổng</h3></div>
+    </div>
+    <div class="order_details_title hidden">
+      <div class="order_details_number"><h3>1</h3></div>
+      <div class="order_details_name"><h3>Bánh gạo</h3></div>
+      <div class="order_details_price"><h3 class="text-end">40,000</h3></div>
+      <div class="order_details_quantity"><h3 class="text-end">5</h3></div>
+      <div class="order_details_sum"><h3 class="text-end">200,000</h3></div>
+    </div>
+    <div class="order_details_title hidden">
+      <div class="order_details_number"><h3>2</h3></div>
+      <div class="order_details_name"><h3>Bánh gạo2</h3></div>
+      <div class="order_details_price"><h3 class="text-end">40,000</h3></div>
+      <div class="order_details_quantity"><h3 class="text-end">5</h3></div>
+      <div class="order_details_sum"><h3 class="text-end">200,000</h3></div>
+    </div>
+  </div>
+  <div class="order_item">
+    <div class="order_title bg-secondary rounded-2">
+      <h3><i class="fas fa-bars me-3" (click)="showInvoiceDetail($event)"></i>Invoice: 0001</h3>
+      <h3>Date: 20-06-2022</h3>
+      <h3 class="text-end">Status: <span class="badge bg-warning status text-dark">Paid</span></h3>
+      <h3 class="text-end">26,500,000 VND</h3>
+    </div>
+    <div class="order_details_title hidden" style="background:rgb(231, 230, 230)">
+      <div class="order_details_number"><h3>No</h3></div>
+      <div class="order_details_name"><h3>Tên sản phẩm</h3></div>
+      <div class="order_details_price"><h3 class="text-end">Đơn giá</h3></div>
+      <div class="order_details_quantity"><h3 class="text-end">Số lượng</h3></div>
+      <div class="order_details_sum"><h3 class="text-end">Tổng</h3></div>
+    </div>
+    <div class="order_details_title hidden">
+      <div class="order_details_number"><h3>1</h3></div>
+      <div class="order_details_name"><h3>Bánh gạo</h3></div>
+      <div class="order_details_price"><h3 class="text-end">40,000</h3></div>
+      <div class="order_details_quantity"><h3 class="text-end">5</h3></div>
+      <div class="order_details_sum"><h3 class="text-end">200,000</h3></div>
+    </div>
+    <div class="order_details_title hidden">
+      <div class="order_details_number"><h3>2</h3></div>
+      <div class="order_details_name"><h3>Bánh gạo2</h3></div>
+      <div class="order_details_price"><h3 class="text-end">40,000</h3></div>
+      <div class="order_details_quantity"><h3 class="text-end">5</h3></div>
+      <div class="order_details_sum"><h3 class="text-end">200,000</h3></div>
+    </div>
+  </div>
+  <div class="order_item">
+    <div class="order_title bg-secondary rounded-2">
+      <h3><i class="fas fa-bars me-3" (click)="showInvoiceDetail($event)"></i>Invoice: 0001</h3>
+      <h3>Date: 20-06-2022</h3>
+      <h3 class="text-end">Status: <span class="badge bg-warning status text-dark">Cancel</span></h3>
+      <h3 class="text-end">26,500,000 VND</h3>
+    </div>
+    <div class="order_details_title hidden" style="background:rgb(231, 230, 230)">
+      <div class="order_details_number"><h3>No</h3></div>
+      <div class="order_details_name"><h3>Tên sản phẩm</h3></div>
+      <div class="order_details_price"><h3 class="text-end">Đơn giá</h3></div>
+      <div class="order_details_quantity"><h3 class="text-end">Số lượng</h3></div>
+      <div class="order_details_sum"><h3 class="text-end">Tổng</h3></div>
+    </div>
+    <div class="order_details_title hidden">
+      <div class="order_details_number"><h3>1</h3></div>
+      <div class="order_details_name"><h3>Bánh gạo</h3></div>
+      <div class="order_details_price"><h3 class="text-end">40,000</h3></div>
+      <div class="order_details_quantity"><h3 class="text-end">5</h3></div>
+      <div class="order_details_sum"><h3 class="text-end">200,000</h3></div>
+    </div>
+    <div class="order_details_title hidden">
+      <div class="order_details_number"><h3>2</h3></div>
+      <div class="order_details_name"><h3>Bánh gạo2</h3></div>
+      <div class="order_details_price"><h3 class="text-end">40,000</h3></div>
+      <div class="order_details_quantity"><h3 class="text-end">5</h3></div>
+      <div class="order_details_sum"><h3 class="text-end">200,000</h3></div>
+    </div>
+  </div> -->
+  
+  <!-- <ng-template *ngFor="let i of (invoice$ |async) | paginate:{itemsPerPage:8,currentPage:page_Invoice,
+    totalItems:_totalItems_Invoice}">
+
+  </ng-template> -->
+  <pagination-controls *ngIf="(invoice$|async)?.length" id="paymentLogPagination" (pageChange)="page_Invoice = $event"></pagination-controls>
+
+    <button class="btn btn-success form-control my-4 fw-bold" [routerLink]="['/home/product']">MUA SẮM NGAY</button>
+
+  </div>
+
+</div>

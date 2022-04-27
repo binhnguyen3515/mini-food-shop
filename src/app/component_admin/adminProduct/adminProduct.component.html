@@ -1,0 +1,5 @@
+
+<app-sharedAdminHeader #entity [entity]="setEntity"></app-sharedAdminHeader>
+<app-sharedTable
+*ngIf="sendData"
+#data [data]="sendData" [refresh]="refreshTable"></app-sharedTable>

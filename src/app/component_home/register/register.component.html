@@ -1,0 +1,65 @@
+<div class="register" [formGroup]="formRegister" (keydown.enter)="submit()">
+  <div class="register_wrapper">
+    <h4>Để đăng ký tài khoản, quý khách vui lòng điền các thông tin sau. Mọi thắc mắc vui lòng gọi 1900.1908 để được giải đáp</h4>
+
+    <div class="input_fields">
+      <div class="input_wrapper name">
+        <input formControlName="name" class="form-control" type="text" placeholder="Nhập họ và tên...">
+      </div>
+      <div *ngIf="name!.invalid && (name!.dirty||name!.touched )" class="text-danger fw-bold fs-4">
+        <div *ngIf="name!.errors?.['required']">
+          Mời nhập tên
+        </div>
+        <div *ngIf="name!.errors?.['minlength']">
+          Họ tên tối thiểu 2 ký tự
+        </div>
+        <div *ngIf="name!.errors?.['maxlength']">
+          Họ tên tối đa 30 ký tự
+        </div>
+      </div>
+      <div class="input_wrapper phone">
+        <input formControlName="phone" class="form-control" type="text" placeholder="Số điện thoại...">
+      </div>
+      <div *ngIf="phone!.invalid && (phone!.dirty||phone!.touched )" class="text-danger fw-bold fs-4">
+        <div *ngIf="phone!.errors?.['required']">
+          Mời nhập số điện thoại
+        </div>
+        <div *ngIf="phone!.errors?.['pattern']">
+          Số điện thoại sai định dạng
+        </div>
+        <div *ngIf="phone!.errors?.['existedPhone']">
+          Số điện thoại đã tồn tại
+        </div>
+      </div>
+      <div class="input_wrapper email">
+        <input formControlName="email" class="form-control" type="text" placeholder="Email...">
+      </div>
+      <div *ngIf="email!.invalid && (email!.dirty||email!.touched )" class="text-danger fw-bold fs-4">
+        <div *ngIf="email!.errors?.['required']">
+          Bạn chưa nhập email
+        </div>
+        <div *ngIf="email!.errors?.['email']">
+          Email sai định dạng
+        </div>
+        <div *ngIf="email!.errors?.['existedEmail']">
+          Email đã tồn tại
+        </div>
+      </div>
+      <div class="input_wrapper password">
+        <input formControlName="password" class="form-control" type="password" placeholder="Mật khẩu...">
+      </div>
+      <div *ngIf="password!.invalid && (password!.dirty||password!.touched )" class="text-danger fw-bold fs-4">
+        <div *ngIf="password!.errors?.['required']">
+          Mời nhập mật khẩu
+        </div>
+        <div *ngIf="password!.errors?.['minlength']">
+          Mật khẩu tối thiểu 6 ký tự
+        </div>
+        <div *ngIf="password!.errors?.['maxlength']">
+          Mật khẩu tối đa 20 ký tự
+        </div>
+      </div>
+      <button class="btn btn-success form-control"(click)="submit()">Đăng ký</button>
+    </div>
+  </div>
+</div>

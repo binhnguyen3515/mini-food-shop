@@ -1,0 +1,41 @@
+<!-- login model -->
+
+<div class="model js-modal" [ngClass]="toggleModal">
+    <div class="modal-container js-modal-container">
+     <div class="modal-close js-modal-close" (click)="closeModal()">
+        <i class="fas fa-times"></i>
+     </div>
+  
+       <div class="login__header">
+           <div class="login__header-title">
+               <span>Để xem "đơn hàng của bạn vui lòng đăng nhập bằng số điện thoại</span>
+           </div>
+       </div>
+  
+       <div class="login__body">
+        
+            <div class="login__body-content">
+             <i class="fas fa-phone-alt"></i>
+             <div class="login__body-information">
+                 <span class="login__phone">Số điện thoại</span>
+                 <input type="text" placeholder="190000">
+             </div>
+            </div>
+  
+            <div class="login__body-content">
+             <i class="fas fa-unlock-alt"></i>
+             <div class="login__body-information">
+                 <span class="login__password">Mật khẩu</span>
+                 <input type="password" placeholder="*******">
+             </div>
+            </div>
+            <div class="" style="border-bottom: 1px solid var(--border-color); padding-bottom: 25px;">
+            <span class="login__forgot_password">Nếu quên mật khẩu? <a [routerLink]="['/home/forgotPass']" (click)="closeModal()">lấy lại tại đây</a></span>
+            <button class="btn btn--green btn-login">TIẾP TỤC</button>
+        </div>
+        <span class="login_with_gmail">Hoặc đăng ký tài khoản</span>
+        <!-- <a href=""><img width="165px" src="assets/img/logo/dung-luong-gmail.jpg" alt=""></a> -->
+        <a [routerLink]="['/home/register']" (click)="closeModal()" class="btn btn-warning btn-lg form-control mb-5 fs-2" style="font-weight:500;padding-block:20px;">ĐĂNG KÝ</a>
+       </div>
+    </div>
+  </div>

@@ -1,0 +1,286 @@
+<div class="shopping__cart-title" style="background-color: #ffffff;margin-top:45px;">
+  <span>Giỏ hàng của ({{tokenStorage.getUser()?tokenStorage.getUser().name:"Bạn"}})</span>
+</div>
+
+  <!-- Sản phẩm Trong giỏ hàng start -->
+<div class="shopping__cart-wrapper" *ngIf="cartService.isEmptyCart;else emptyCart">
+    <div class="shopping__cart" *ngFor="let i of cartItems">
+        <div class="shopping__cart-body">
+            <div class="shopping__cart-content">
+                <img [src]="baseHostImageUrl+i.picture" alt="">
+                <div class="" style="margin-left: 14px;">
+                    <span class="shopping__cart-name">{{i.name}}</span>
+                    <span class="shopping__cart-price">{{i.discountDTO?(i.productDetailsDTO.priceSell*(1-i.discountDTO.percentage)| number):i.productDetailsDTO.priceSell| number}}đ/phần</span>
+                </div>
+            </div>
+            <div class="shopping__cart-total-money">
+                <span class="shopping__cart-price-current">{{i.discountDTO?(i.productDetailsDTO.priceSell*(1-i.discountDTO.percentage)*i.productDetailsDTO.quantity| number):i.productDetailsDTO.priceSell*i.productDetailsDTO.quantity | number}}đ</span>
+                <span class="shopping__cart-price-old" *ngIf="i.discountDTO">{{i.discountDTO?(i.productDetailsDTO.priceSell*i.productDetailsDTO.quantity| number):""}}đ</span>
+            </div>
+        </div>
+        <div class="quantity">
+            <div class="quantitynum">
+                <button id="decrement" [ngClass]="{'disabled':i.productDetailsDTO.quantity<=1}" (click)="decrement(i.productDetailsDTO.quantity = i.productDetailsDTO.quantity - 1,i)"><i class="quantitynum__icons far fa-window-minimize"></i></button>
+                <input (input)="quantityChange($event.target,i)" [value]="i.productDetailsDTO.quantity" oninput="validity.valid||(value='');" type="number" min="1" max="20" id="my-input" readonly>
+                <button id="increment" (click)="increment(i.productDetailsDTO.quantity>=20?(i.productDetailsDTO.quantity):(i.productDetailsDTO.quantity = i.productDetailsDTO.quantity + 1),i)"><i class="fas fa-plus"></i></button>
+            </div>
+            <div class="shopping__cart-delete" style="cursor: pointer;" (click)="cartService.remove(i.productDetailsDTO.id)"> Xóa</div>
+        </div>
+      </div>
+</div>
+<ng-template #emptyCart>
+    <div class="empty_cart mb-3">
+        <img src="assets/img/logo/giohang.png" alt="">
+        <span class="fs-1">
+            Chưa có sản phẩm
+        </span>
+    </div>
+</ng-template>
+
+<!-- <div class="shopping__cart">
+  <div class="shopping__cart-body">
+      <div class="shopping__cart-content">
+          <img src="assets/img/product/khanuoc.png" alt="">
+          <div class="" style="margin-left: 14px;">
+              <span class="shopping__cart-name">Khăn ước em bé Baby Maris không mùi gói 20 miếngKhăn ước em bé Baby Maris không mùi gói 20 miếng</span>
+              <span class="shopping__cart-price">8.000đ/gói</span>
+          </div>
+      </div>
+      <div class="shopping__cart-total-money">
+          <span class="shopping__cart-price-current">8.000đ</span>
+          <span class="shopping__cart-price-old">10.000đ</span>
+      </div>
+  </div>
+  <div class="quantity">
+      <div class="quantitynum">
+          <button id="decrement" onclick="stepper(this)"><i class="quantitynum__icons far fa-window-minimize"></i></button>
+          <input type="number" min="0" max="50" step="1"
+          value="1" id="my-input" readonly>
+          <button id="increment" onclick="stepper(this)"><i class="fas fa-plus"></i></button>
+      </div>
+      <div class="shopping__cart-delete"> Xóa</div>
+  </div>
+</div> -->
+  <!-- Sản phẩm Trong giỏ hàng end -->
+
+<!-- Thanh toán start -->
+<div class="shopping__cart-payment" *ngIf="cartService.isEmptyCart">
+  <!-- <div class="shopping__cart-payment--header">
+      <a href="">Mua thêm </a><b>68.000đ </b><span>để được </span><b>miễn phí giao tiêu chuẩn tối đa 15.000đ</b>
+  </div> -->
+
+  <div class="shopping__cart-payment--body mb-3">
+      <!-- <div class="shopping__cart-payment--body__content">
+          <span class="shopping__cart-payment--name">Tiền hàng :</span>
+          <span class="shopping__cart-payment--price">66.000đ</span>
+      </div> -->
+      <!-- <div class="shopping__cart-payment--body__content">
+          <span class="shopping__cart-Delivery--charges"><i class="far fa-question-circle"></i> Phí giao dự kiến :</span>
+          <span class="shopping__cart-price__Delivery--charges">15.000đ</span>
+      </div> -->
+      <div class="shopping__cart-payment--body__content">
+          <span class="shopping__cart-Delivery--charges" style="color: var(--text-color);">Tổng tiền :</span>
+          <span class="shopping__cart-price__Delivery--charges text-danger" style="font-weight: 600;">{{cartService.totalMoney|number}}đ</span>
+      </div>
+      <div class="shopping__cart-payment--body__content">
+          <span class="shopping__cart-Delivery--charges" style="color: var(--text-color);">Tổng tiền sau miễn giảm:</span>
+          <span class="shopping__cart-price__Delivery--charges text-danger" style="font-weight: 600;">{{cartService.totalMoneyNet|number}}đ</span>
+      </div>
+      <!-- <div class="shopping__cart-payment--body__content">
+          <span class="shopping__cart-note">(<b>Miễn phí giao hàng tiêu chuẩn </b>đơn hàng >= 100.000đ và phí giao tối đa 15.000đ)</span>                                
+      </div> -->
+      <!-- <div class="shopping__cart-payment--body__content">
+          <button class="btn btn--green btn-vouchers"><i class="fas fa-ticket-alt"></i>Dùng phiếu mua hàng</button>
+      </div> -->
+      <div class="shopping__cart-payment--body__btn">
+          <button class="btn btn--green btn-order--cart" (click)="checkOut()">KIỂM TRA ĐƠN HÀNG</button>
+          <button class="btn btn--green btn-delete--cart"(click)="cartService.clear()">XÓA GIỎ HÀNG</button>
+      </div>
+        <!-- Fill payment info-->
+        <div [formGroup]="orderForm" class="payment__form" [ngClass]="{'hideDefault':!isLoginStatus}">
+            <div class="a">
+                <div class="wrapper">
+                    <input type="text" class="form-control" formControlName="phone">
+                </div>
+                <div *ngIf="phone!.invalid && (phone!.dirty||phone!.touched )" class="text-danger fw-bold fs-4">
+                    <div *ngIf="phone!.errors?.['required']">
+                      Mời nhập SĐT
+                    </div>
+                    <div *ngIf="phone!.errors?.['invalidPhone'] && !phone!.errors?.['required']">
+                      SĐT không hợp lệ
+                    </div>
+                  </div>
+            </div>
+            
+            <div class="b">
+                <div class="wrapper">
+                    <input type="text" class="form-control" formControlName="address">
+                </div>
+                <div *ngIf="address!.invalid && (address!.dirty||address!.touched )" class="text-danger fw-bold fs-4">
+                    <div *ngIf="address!.errors?.['required']">
+                      Mời nhập địa chỉ giao hàng
+                    </div>
+                  </div>
+            </div>
+            <div class="c">
+                <textarea formControlName="customerNotes" class="form-control" cols="30" rows="3" placeholder="Nhập ghi chú..."></textarea>
+            </div>
+            <button class="btn btn-warning form-control d" (click)="order()">ĐẶT HÀNG</button>
+        </div>
+        <!-- Fill payment info edge-->
+  </div>
+</div>
+<!-- Thanh toán end -->
+
+
+
+<!-- Sản phẩm liên quan star -->
+<!-- <div class="products__cart">
+  <div class="row sm-gutter">
+      <div class="col l-12">
+          <div class="products__sale-off--content-drink">
+              <div class="products__sale-off--title">
+                  <h2 style="color: #4A4A6F;margin-top: -5px;">SẢN PHẨM LIÊN QUAN</h2>
+              </div>
+          </div>
+          <div class="product__container">
+              <div class="col l-3">
+                  <div class="home-product-item" href="#">
+                      <a href="">
+                          <div class="home-product-item__img" style="background-image: url(https://cdn.tgdd.vn/Products/Images/3003/228901/bhx/khan-uot-kinkin-khong-mui-goi-100-mieng-202104201705051404_300x300.jpg);"></div>
+                      </a>
+                      <h4 class="home-product-item__name">
+                         Khăn giấy kinkin gói 100 miếng.
+                      </h4>
+                     <div class="home-product-item__price">
+                          <span class="home-product-item__price-old">40.000đ</span>
+                          <span class="home-product-item__price-current">10.000đ</span>
+                     </div>
+                     <div class="home-product-item__promotion">
+                         <span class="home-product-item__description">Khuyến mãi: Tặng kèm 1 thùng bia và Tặng kèm 1 thùng bia và Tặng kèm 1 thùng bia và Tặng kèm 1 thùng bia và</span>                                               
+                     </div>
+                     <div style="text-align: center;">
+                      <a href="">
+                          <button class="btn-cart-product btn btn--green">Mua hàng</button>
+                      </a>
+                     </div>
+                  
+                </div>
+              </div>
+              <div class="col l-3">
+                  <div class="home-product-item" href="#">
+                      <a href="">
+                          <div class="home-product-item__img" style="background-image: url(https://cdn.tgdd.vn/Products/Images/3003/228901/bhx/khan-uot-kinkin-khong-mui-goi-100-mieng-202104201705051404_300x300.jpg);"></div>
+                      </a>
+                      <h4 class="home-product-item__name">
+                         Khăn giấy kinkin gói 100 miếng.
+                      </h4>
+                     <div class="home-product-item__price">
+                          <span class="home-product-item__price-old">40.000đ</span>
+                          <span class="home-product-item__price-current">10.000đ</span>
+                     </div>
+                     <div class="home-product-item__promotion">
+                         <span class="home-product-item__description">Khuyến mãi: Tặng kèm 1 thùng bia và Tặng kèm 1 thùng bia và Tặng kèm 1 thùng bia và Tặng kèm 1 thùng bia và</span>                                               
+                     </div>
+                     <div style="text-align: center;">
+                      <a href="">
+                          <button class="btn-cart-product btn btn--green">Mua hàng</button>
+                      </a>
+                     </div>
+                    
+                </div>
+              </div>
+              <div class="col l-3">
+                  <div class="home-product-item" href="#">
+                      <a href="">
+                          <div class="home-product-item__img" style="background-image: url(https://cdn.tgdd.vn/Products/Images/3003/228901/bhx/khan-uot-kinkin-khong-mui-goi-100-mieng-202104201705051404_300x300.jpg);"></div>
+                      </a>
+                      <h4 class="home-product-item__name">
+                         Khăn giấy kinkin gói 100 miếng.
+                      </h4>
+                     <div class="home-product-item__price">
+                          <span class="home-product-item__price-old">40.000đ</span>
+                          <span class="home-product-item__price-current">10.000đ</span>
+                     </div>
+                     <div class="home-product-item__promotion">
+                         <span class="home-product-item__description">Khuyến mãi: Tặng kèm 1 thùng bia và Tặng kèm 1 thùng bia và Tặng kèm 1 thùng bia và Tặng kèm 1 thùng bia và</span>                                               
+                     </div>
+                     <div style="text-align: center;">
+                      <a href="">
+                          <button class="btn-cart-product btn btn--green">Mua hàng</button>
+                      </a>
+                     </div>
+                   
+                </div>
+              </div>
+              <div class="col l-3">
+                  <div class="home-product-item" href="#">
+                      <a href="">
+                          <div class="home-product-item__img" style="background-image: url(https://cdn.tgdd.vn/Products/Images/3003/228901/bhx/khan-uot-kinkin-khong-mui-goi-100-mieng-202104201705051404_300x300.jpg);"></div>
+                      </a>
+                      <h4 class="home-product-item__name">
+                         Khăn giấy kinkin gói 100 miếng.
+                      </h4>
+                     <div class="home-product-item__price">
+                          <span class="home-product-item__price-old">40.000đ</span>
+                          <span class="home-product-item__price-current">10.000đ</span>
+                     </div>
+                     <div class="home-product-item__promotion">
+                         <span class="home-product-item__description">Khuyến mãi: Tặng kèm 1 thùng bia và Tặng kèm 1 thùng bia và Tặng kèm 1 thùng bia và Tặng kèm 1 thùng bia và</span>                                               
+                     </div>
+                     <div style="text-align: center;">
+                      <a href="">
+                          <button class="btn-cart-product btn btn--green">Mua hàng</button>
+                      </a>
+                     </div>
+                  
+                </div>
+              </div>
+
+              <div class="col l-12 c-12">
+
+                  <ul class="pagination home-product__pagination">
+                      <li class="pagination-item">
+                          <a href="" class="pagination-item__link">
+                              <i class="pagination-item__icon fas fa-angle-left"></i>                                       
+                          </a>
+                      </li>
+
+                      <li class="pagination-item pagination-item--active">
+                          <a href="" class="pagination-item__link">1</a>
+                      </li>
+                      <li class="pagination-item">
+                          <a href="" class="pagination-item__link">2</a>
+                      </li>
+                      <li class="pagination-item">
+                          <a href="" class="pagination-item__link">3</a>
+                      </li>
+                      <li class="pagination-item">
+                          <a href="" class="pagination-item__link">4</a>
+                      </li>
+                      <li class="pagination-item">
+                          <a href="" class="pagination-item__link">5</a>
+                      </li>
+                      <li class="pagination-item">
+                          <a href="" class="pagination-item__link">...</a>
+                      </li>
+                      <li class="pagination-item">
+                          <a href="" class="pagination-item__link">14</a>
+                      </li>
+                      
+
+                      <li class="pagination-item">
+                          <a href="" class="pagination-item__link">
+                              <i class="pagination-item__icon fas fa-angle-right"></i>                             
+                          </a>
+                      </li>
+                  </ul>
+              </div>
+          </div>
+      </div>   
+
+  </div>
+
+
+</div> -->
+<!-- Sản phẩm liên quan end -->

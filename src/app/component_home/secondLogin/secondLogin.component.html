@@ -1,0 +1,33 @@
+<div [formGroup]="loginForm" class="secondLogin" (keydown.enter)="onSubmit()">
+  <h3 class="px-5 mx-5 text-center" style="opacity: 0.7;">Bạn chưa đăng nhập. Vui lòng đăng nhập bằng số điện thoại để tiếp tục</h3>
+  <div class="secondLogin_phone mt-5">
+    <input formControlName="username" class="form-control" type="text" placeholder="1900000">
+    <label for="">Số điện thoại</label>
+  </div>
+  <div *ngIf="username!.invalid && (username!.dirty||username!.touched )" class="text-danger fw-bold">
+    <div *ngIf="username!.errors?.['required']">
+      Bạn chưa nhập số điện thoại
+    </div>
+    <div *ngIf="username!.errors?.['invalidPhone'] && !username!.errors?.['required']">
+      Số điện thoại không hợp lệ
+    </div>
+  </div>
+  <div class="secondLogin_password mt-4">
+    <input formControlName="password" class="form-control" type="password" placeholder="******">
+    <label for="">Mật khẩu</label>
+  </div>
+  <div *ngIf="password!.invalid && (password!.dirty||password!.touched )" class="text-danger fw-bold">
+    <div *ngIf="password!.errors?.['required']">
+      Bạn chưa nhập mật khẩu
+    </div>
+    <div *ngIf="password!.errors?.['minlength'] || password!.errors?.['maxlength']">
+      Mật khẩu từ 6 đến 20 ký tự
+    </div>
+  </div>
+  <span style="color:#1370C6;display:inline-block;" class="mt-3">Nếu quên mật khẩu? &nbsp;</span><a [routerLink]="['/home/forgotPass']">lấy lại tại đây</a>
+  <button class="btn btn-success form-control my-4 fs-2" style="padding-block: 23px; font-weight: 500;" (click)="onSubmit()">TIẾP TỤC</button>
+  <div class="cross_line">
+    <hr style="position: relative;">
+  </div>
+  <a [routerLink]="['/home/register']" class="btn btn-warning form-control my-4 fs-2" style="padding-block: 23px; font-weight: 500;">ĐĂNG KÝ</a>
+</div>
