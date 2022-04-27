@@ -1,0 +1,19 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap&subset=vietnamese');
+
+:root{
+
+    --green-color:#008848;
+    --dark-green-color:#037540;
+    --white-color:#fff;
+    --black-color:#000;
+    --text-color:#333;
+    --border-color:#dbdbdb;
+    --primary-color:#ee4d2d;
+    --background-color:#E9EDF0;
+
+    --header-height:120px;
+    --navbar-height: 34px;
+    --header-sort-bar-height:46px;
+    --header-with-search-height:calc(var(--header-height) - var(--navbar-height));
+}
+
