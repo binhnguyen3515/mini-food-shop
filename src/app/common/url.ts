@@ -1,7 +1,7 @@
-export const baseUrl = "https://d962-2402-800-63eb-5dbc-ed9f-e1f9-f59-5a9f.ap.ngrok.io/v1/api/"
+export const baseUrl = "https://1e69-14-161-24-161.ap.ngrok.io/v1/api/"
 export const GlobalUrl = Object.freeze({
-    baseUrl : 'https://d962-2402-800-63eb-5dbc-ed9f-e1f9-f59-5a9f.ap.ngrok.io/v1/api/',
-    baseHostImageUrl : 'https://d962-2402-800-63eb-5dbc-ed9f-e1f9-f59-5a9f.ap.ngrok.io/assets/img/',
+    baseUrl : 'https://1e69-14-161-24-161.ap.ngrok.io/v1/api/',
+    baseHostImageUrl : 'https://1e69-14-161-24-161.ap.ngrok.io/assets/img/',
     // baseHostAvatarUrl : 'http://localhost:8080/assets/avatar/',
     // baseHeaderImageUrl:'http://localhost:4200/assets/banner/',
     // baseI18nUrl:'http://localhost:4200/assets/i18n/',
